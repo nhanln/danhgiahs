@@ -1,0 +1,6 @@
+{
+  "name": "Quản Lý Lớp Học & Đánh Giá Học Sinh",
+  "description": "Ứng dụng web hỗ trợ giáo viên quản lý lớp học, tổ chức vòng quay may mắn, cộng trừ điểm thưởng và đánh giá học sinh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
