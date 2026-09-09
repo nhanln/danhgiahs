@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quản Lý Lớp Học & Đánh Giá Học Sinh</title>
-  <meta name="description" content="Ứng dụng web hỗ trợ giáo viên quản lý lớp học, tổ chức đua vịt vui nhộn, chia nhóm tự động, vòng quay may mắn, cộng trừ điểm thưởng theo từng môn học và đánh giá học sinh." />
+  <meta name="description" content="Ứng dụng web hỗ trợ giáo viên quản lý lớp học, đăng ký & đăng nhập bằng số điện thoại và mã OTP, tổ chức đua vịt vui nhộn, chia nhóm tự động, vòng quay may mắn, cộng trừ điểm thưởng theo từng môn học." />
   <meta property="og:title" content="Quản Lý Lớp Học & Đánh Giá Học Sinh" />
-  <meta property="og:description" content="Ứng dụng web hỗ trợ giáo viên quản lý lớp học, tổ chức đua vịt vui nhộn, chia nhóm tự động, vòng quay may mắn, cộng trừ điểm thưởng theo từng môn học và đánh giá học sinh." />
+  <meta property="og:description" content="Ứng dụng web hỗ trợ giáo viên quản lý lớp học, đăng ký & đăng nhập bằng số điện thoại và mã OTP, tổ chức đua vịt vui nhộn, chia nhóm tự động, vòng quay may mắn, cộng trừ điểm thưởng theo từng môn học." />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -61,6 +61,303 @@
 </head>
 
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+  <!-- ==================== SIMULATED REAL-TIME SMS OTP NOTIFICATION ==================== -->
+  <div id="smsNotificationBanner" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-md bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl border border-slate-700/60 hidden transition-all duration-300 transform scale-100">
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shrink-0 mt-0.5 shadow-xs">
+          <i class="fa-solid fa-comment-sms"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-black tracking-wider uppercase text-emerald-400">TIN NHẮN SMS • CLASSHERO</span>
+            <span class="text-[10px] text-slate-400">Vừa xong</span>
+          </div>
+          <p class="text-xs text-slate-200 mt-1 leading-relaxed">
+            Mã xác thực OTP gửi về số <strong id="smsTargetPhoneDisplay" class="text-white">---</strong> là: <span class="px-2 py-0.5 rounded-lg bg-amber-400/20 text-amber-300 font-mono text-base font-black tracking-widest border border-amber-400/40" id="smsOtpCodeDisplay">------</span>
+          </p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Mã có hiệu lực trong 3 phút. Vui lòng không chia sẻ mã này.</p>
+        </div>
+      </div>
+      <button onclick="dismissSmsBanner()" class="text-slate-400 hover:text-white text-xs p-1" title="Đóng thông báo">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+    <div class="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between">
+      <span class="text-[10px] text-slate-400"><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i>Bảo mật ClassHero OTP</span>
+      <button onclick="autoFillOtpCode()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-xs">
+        <i class="fa-solid fa-paste"></i>
+        <span>Tự Động Điền Mã</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ GIÁO VIÊN (AUTH PORTAL) ==================== -->
+  <div id="authScreen" class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden">
+    <!-- Ambient decorative glows -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-4xl w-full bg-white rounded-3xl shadow-2xl border border-slate-100/90 overflow-hidden flex flex-col lg:flex-row relative z-10 my-auto">
+      <!-- Left Column: Branding, Value Proposition & Testimonial -->
+      <div class="lg:w-5/12 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-700 text-white p-6 sm:p-8 flex flex-col justify-between relative">
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#fff 15%, transparent 16%); background-size: 20px 20px;"></div>
+        
+        <div class="relative z-10">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md text-white flex items-center justify-center text-2xl shadow-inner border border-white/20">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <h2 class="font-black text-2xl tracking-tight">ClassHero</h2>
+              <p class="text-xs text-blue-200 font-medium">Trợ Lý Số Quản Lý Lớp Học</p>
+            </div>
+          </div>
+
+          <h3 class="text-xl sm:text-2xl font-black leading-snug mb-3">
+            Dành Riêng Cho Quý Thầy Cô Việt Nam 🇻🇳
+          </h3>
+          <p class="text-xs sm:text-sm text-blue-100 mb-6 leading-relaxed">
+            Hệ thống tổ chức lớp học, thi đua khen thưởng theo từng môn học và trò chơi tương tác sôi nổi nhất.
+          </p>
+
+          <div class="space-y-3 text-xs sm:text-sm text-blue-50">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+              <span>Đua vịt học tập 🦆 & Vòng quay may mắn 🎡</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+              <span>Cộng/Trừ điểm chi tiết theo từng môn học 📐</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+              <span>Chia nhóm tự động & chấm điểm đội nhóm 👥</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+              <span>Bảo mật qua số điện thoại & mã OTP gửi về 🔒</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="relative z-10 pt-6 mt-6 border-t border-white/15">
+          <div class="flex items-center gap-3">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherTrang" class="w-9 h-9 rounded-full bg-white/20 border border-white/40" />
+            <div>
+              <p class="text-xs font-bold leading-tight">Cô Hoàng Thu Trang</p>
+              <p class="text-[11px] text-blue-200">Giáo viên Trường Tiểu học Ánh Sáng</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Authentication Forms (Tabs for Login & Register) -->
+      <div class="lg:w-7/12 p-6 sm:p-8 flex flex-col justify-between">
+        <div>
+          <!-- Tab Switcher -->
+          <div class="flex p-1 bg-slate-100 rounded-2xl mb-6">
+            <button onclick="switchAuthTab('login')" id="authTabLoginBtn" class="flex-1 py-2.5 text-xs sm:text-sm font-extrabold rounded-xl transition shadow-xs bg-white text-blue-600">
+              <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Đăng Nhập
+            </button>
+            <button onclick="switchAuthTab('register')" id="authTabRegisterBtn" class="flex-1 py-2.5 text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-800 rounded-xl transition">
+              <i class="fa-solid fa-user-plus mr-1.5"></i>Đăng Ký Mới (Mã OTP)
+            </button>
+          </div>
+
+          <!-- TAB 1: FORM ĐĂNG NHẬP -->
+          <div id="authLoginForm" class="space-y-4">
+            <div class="mb-4">
+              <h3 class="text-lg font-black text-slate-900">Chào mừng Thầy/Cô trở lại! 👋</h3>
+              <p class="text-xs text-slate-500 mt-0.5">Vui lòng đăng nhập số điện thoại để vào sổ lớp học.</p>
+            </div>
+
+            <!-- Login Mode Switcher (Password vs OTP) -->
+            <div class="flex items-center justify-between text-xs pb-1 border-b border-slate-100">
+              <span class="font-bold text-slate-700">Phương thức đăng nhập:</span>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="setLoginMode('password')" id="btnModePassword" class="px-2.5 py-1 rounded-lg text-xs font-bold transition bg-blue-50 text-blue-700 border border-blue-200">
+                  Mật khẩu
+                </button>
+                <button type="button" onclick="setLoginMode('otp')" id="btnModeOtp" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 transition">
+                  Mã OTP SMS
+                </button>
+              </div>
+            </div>
+
+            <form onsubmit="handleLoginSubmit(event)" class="space-y-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại di động *</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-xs font-semibold">+84</span>
+                  <input type="tel" id="loginPhone" required placeholder="09xx xxx xxx hoặc 03x, 05x, 07x..." class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                </div>
+              </div>
+
+              <!-- Password field (when mode === password) -->
+              <div id="loginPasswordField">
+                <div class="flex items-center justify-between mb-1">
+                  <label class="block text-xs font-bold text-slate-700">Mật khẩu *</label>
+                  <button type="button" onclick="setLoginMode('otp')" class="text-[11px] text-blue-600 hover:underline font-semibold">Quên mật khẩu? Dùng mã OTP</button>
+                </div>
+                <div class="relative">
+                  <input type="password" id="loginPassword" placeholder="Nhập mật khẩu..." class="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                  <button type="button" onclick="togglePasswordVisibility('loginPassword', 'loginEyeIcon')" class="absolute right-3.5 top-3 text-slate-400 hover:text-slate-600 text-sm">
+                    <i class="fa-solid fa-eye" id="loginEyeIcon"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- OTP field (when mode === otp) -->
+              <div id="loginOtpField" class="hidden space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="block text-xs font-bold text-slate-700">Mã xác thực OTP gửi về SMS *</label>
+                  <button type="button" onclick="sendLoginOtp()" id="btnSendLoginOtp" class="text-[11px] text-blue-600 font-extrabold hover:underline">
+                    <i class="fa-solid fa-paper-plane mr-1"></i>Gửi Mã OTP
+                  </button>
+                </div>
+                <input type="text" id="loginOtp" maxlength="6" placeholder="Nhập 6 chữ số OTP..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold tracking-widest text-center text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+              </div>
+
+              <div class="flex items-center justify-between pt-1">
+                <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-600 font-medium">
+                  <input type="checkbox" id="rememberLogin" checked class="rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
+                  <span>Duy trì đăng nhập trên máy này</span>
+                </label>
+              </div>
+
+              <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-black transition shadow-md shadow-blue-500/25 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Đăng Nhập Vào Lớp Học</span>
+              </button>
+            </form>
+
+            <!-- Quick Demo Login -->
+            <div class="pt-4 border-t border-slate-100">
+              <span class="block text-[11px] font-bold text-slate-400 mb-2">⚡ Thử nhanh bằng tài khoản giáo viên mẫu:</span>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="quickDemoLogin('teacher-1')" class="p-2 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-xl text-left transition flex items-center gap-2 group">
+                  <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherAn" class="w-7 h-7 rounded-full bg-blue-100 shrink-0" />
+                  <div class="truncate">
+                    <p class="text-xs font-bold text-slate-800 truncate group-hover:text-blue-700">Thầy Văn An</p>
+                    <p class="text-[10px] text-slate-500">Môn Toán (Lớp 4A)</p>
+                  </div>
+                </button>
+                <button onclick="quickDemoLogin('teacher-2')" class="p-2 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 border border-slate-200 rounded-xl text-left transition flex items-center gap-2 group">
+                  <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherTrang" class="w-7 h-7 rounded-full bg-rose-100 shrink-0" />
+                  <div class="truncate">
+                    <p class="text-xs font-bold text-slate-800 truncate group-hover:text-rose-700">Cô Thu Trang</p>
+                    <p class="text-[10px] text-slate-500">Tiếng Việt (Lớp 7B)</p>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: FORM ĐĂNG KÝ VỚI SỐ ĐIỆN THOẠI & MÃ GỬI VỀ (SMS OTP) -->
+          <div id="authRegisterForm" class="hidden space-y-3.5">
+            <div>
+              <h3 class="text-lg font-black text-slate-900">Đăng Ký Giáo Viên Mới 📝</h3>
+              <p class="text-xs text-slate-500 mt-0.5">Nhập số điện thoại để nhận mã xác thực OTP gửi về SMS.</p>
+            </div>
+
+            <form onsubmit="handleRegisterSubmit(event)" class="space-y-3">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Họ và tên Thầy/Cô *</label>
+                  <input type="text" id="regName" required placeholder="VD: Thầy Lê Minh Đức" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Giới tính xưng hô</label>
+                  <select id="regGender" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500">
+                    <option value="male">Thầy giáo 👨‍🏫</option>
+                    <option value="female">Cô giáo 👩‍🏫</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Trường học / Đơn vị *</label>
+                  <input type="text" id="regSchool" required placeholder="VD: Tiểu học Chu Văn An" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Môn phụ trách chính</label>
+                  <select id="regSubject" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500">
+                    <option value="math">📐 Toán Học</option>
+                    <option value="vietnamese">📖 Tiếng Việt / Ngữ Văn</option>
+                    <option value="english">🌍 Tiếng Anh</option>
+                    <option value="science">🔬 Khoa Học / Tự nhiên</option>
+                    <option value="history">🏛️ Lịch Sử - Địa Lý</option>
+                    <option value="it">💻 Tin Học</option>
+                    <option value="art">🎨 Mỹ Thuật</option>
+                    <option value="music">🎵 Âm Nhạc</option>
+                    <option value="ethics">🌟 Chủ Nhiệm / Kỹ Năng</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- SỐ ĐIỆN THOẠI & NÚT GỬI MÃ OTP -->
+              <div class="p-3 bg-blue-50/70 border border-blue-100 rounded-2xl space-y-2">
+                <label class="block text-xs font-extrabold text-blue-900">
+                  <i class="fa-solid fa-mobile-screen mr-1 text-blue-600"></i>Số điện thoại nhận mã xác thực *
+                </label>
+                <div class="flex gap-2">
+                  <div class="relative flex-1">
+                    <span class="absolute left-3 top-2 text-slate-400 text-xs font-semibold">+84</span>
+                    <input type="tel" id="regPhone" required placeholder="0987654321..." class="w-full pl-11 pr-3 py-2 bg-white border border-blue-200 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                  </div>
+                  <button type="button" onclick="sendRegistrationOtp()" id="btnSendRegOtp" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black transition shrink-0 shadow-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Gửi Mã OTP</span>
+                  </button>
+                </div>
+                <p id="regOtpHelperText" class="text-[11px] text-blue-700 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-info"></i>
+                  <span>Nhấn "Gửi Mã OTP" để nhận mã 6 chữ số gửi về điện thoại.</span>
+                </p>
+              </div>
+
+              <!-- Ô NHẬP MÃ XÁC THỰC GỬI VỀ -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">
+                  Nhập mã OTP gửi về số điện thoại *
+                </label>
+                <div class="relative">
+                  <input type="text" id="regOtp" maxlength="6" required placeholder="• • • • • •" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base font-mono font-black tracking-widest text-center text-slate-900 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden" />
+                  <span id="regOtpStatusBadge" class="hidden absolute right-3 top-2.5 text-xs font-bold px-2 py-0.5 rounded-md"></span>
+                </div>
+              </div>
+
+              <!-- MẬT KHẨU -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Mật khẩu (≥ 6 ký tự) *</label>
+                  <input type="password" id="regPassword" required minlength="6" placeholder="Tạo mật khẩu..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Xác nhận mật khẩu *</label>
+                  <input type="password" id="regConfirmPassword" required minlength="6" placeholder="Nhập lại mật khẩu..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                </div>
+              </div>
+
+              <button type="submit" id="btnSubmitRegister" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-black transition shadow-md shadow-emerald-600/25 flex items-center justify-center gap-2 mt-2">
+                <i class="fa-solid fa-shield-check"></i>
+                <span>Xác Thực Mã OTP & Hoàn Tất Đăng Ký</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="pt-4 text-center border-t border-slate-100 text-xs text-slate-400">
+          ClassHero v2.5 • Dành riêng cho giáo viên tiểu học và trung học cơ sở
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== KHÔNG GIAN LÀM VIỆC LỚP HỌC (MAIN APP SCREEN) ==================== -->
+  <div id="appScreen" class="hidden flex-col flex-1 min-h-screen">
   <!-- Top Navigation Header -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,7 +376,7 @@
           </div>
         </div>
 
-        <!-- Class & Subject Selector & Quick Actions -->
+        <!-- Class & Subject Selector, Teacher Profile & Quick Actions -->
         <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
           <!-- Class Selector -->
           <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
@@ -116,6 +413,49 @@
             <i class="fa-solid fa-user-plus"></i>
             <span>Thêm Học Sinh</span>
           </button>
+
+          <!-- Teacher Profile & Account Menu -->
+          <div class="relative pl-1 border-l border-slate-200">
+            <button onclick="toggleTeacherMenu()" id="btnTeacherProfile" class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-100 transition text-left border border-slate-200/80 bg-white">
+              <img id="headerTeacherAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherAn" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-blue-300 bg-blue-50" />
+              <div class="hidden xl:block text-left pr-1">
+                <span id="headerTeacherName" class="text-xs font-bold text-slate-800 block leading-tight truncate max-w-[110px]">Thầy Nguyễn Văn An</span>
+                <span id="headerTeacherSubject" class="text-[10px] text-slate-500 block leading-tight truncate max-w-[110px]">Môn Toán</span>
+              </div>
+              <i class="fa-solid fa-chevron-down text-slate-400 text-[10px] pr-1"></i>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="teacherDropdownMenu" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50">
+              <div class="px-4 py-2.5 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <img id="menuTeacherAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherAn" class="w-9 h-9 rounded-full border border-blue-200 bg-blue-50" />
+                  <div class="truncate">
+                    <p class="text-xs font-extrabold text-slate-900 truncate" id="menuTeacherFullName">Thầy Nguyễn Văn An</p>
+                    <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5">
+                      <i class="fa-solid fa-phone text-[10px] text-emerald-500"></i>
+                      <span id="menuTeacherPhone">0988 123 456</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="mt-2 flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 text-[10px] font-bold" id="menuTeacherSubjectBadge">Môn Toán</span>
+                  <span class="text-[10px] text-slate-400 truncate" id="menuTeacherSchool">TH Chu Văn An</span>
+                </div>
+              </div>
+
+              <div class="py-1">
+                <button onclick="openModal('editTeacherProfileModal'); toggleTeacherMenu();" class="w-full text-left px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+                  <i class="fa-solid fa-user-pen text-blue-500"></i>
+                  <span>Chỉnh sửa thông tin Thầy/Cô</span>
+                </button>
+                <button onclick="handleLogout()" class="w-full text-left px-4 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 flex items-center gap-2 border-t border-slate-100">
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                  <span>Đăng xuất tài khoản</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -733,6 +1073,7 @@
       </div>
     </section>
   </main>
+  </div> <!-- /#appScreen -->
 
   <!-- ==================== MODALS ==================== -->
 
@@ -921,6 +1262,59 @@
           Đóng
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal 7: Edit Teacher Profile Modal -->
+  <div id="editTeacherProfileModal" class="modal-backdrop fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-blue-600"></i>
+          Hồ Sơ Giáo Viên
+        </h3>
+        <button onclick="closeModal('editTeacherProfileModal')" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleUpdateTeacherProfile(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Họ và tên Thầy/Cô *</label>
+          <input type="text" id="editProfileName" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Trường học / Cơ sở *</label>
+          <input type="text" id="editProfileSchool" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Môn phụ trách chính</label>
+          <select id="editProfileSubject" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500">
+            <option value="math">📐 Toán Học</option>
+            <option value="vietnamese">📖 Tiếng Việt / Ngữ Văn</option>
+            <option value="english">🌍 Tiếng Anh</option>
+            <option value="science">🔬 Khoa Học / Tự nhiên</option>
+            <option value="history">🏛️ Lịch Sử - Địa Lý</option>
+            <option value="it">💻 Tin Học</option>
+            <option value="art">🎨 Mỹ Thuật</option>
+            <option value="music">🎵 Âm Nhạc</option>
+            <option value="ethics">🌟 Chủ Nhiệm / Kỹ Năng</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại đăng ký (Không thể đổi)</label>
+          <input type="text" id="editProfilePhone" disabled class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-500 cursor-not-allowed" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+          <button type="button" onclick="closeModal('editTeacherProfileModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+            Hủy
+          </button>
+          <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-xs">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Lưu Thông Tin</span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -1114,6 +1508,23 @@
             osc.start(this.ctx.currentTime + idx * 0.1);
             osc.stop(this.ctx.currentTime + idx * 0.1 + 0.3);
           });
+        } catch (e) {}
+      }
+      playSmsChime() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, this.ctx.currentTime); // D5
+          osc.frequency.setValueAtTime(880.00, this.ctx.currentTime + 0.08); // A5
+          gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.35);
         } catch (e) {}
       }
     }
@@ -2771,6 +3182,558 @@
       });
     });
 
+    // ==================== HỆ THỐNG QUẢN LÝ TÀI KHOẢN GIÁO VIÊN & XÁC THỰC OTP ====================
+    const TEACHERS_STORAGE_KEY = 'classhero_teachers_v1';
+    const CURRENT_TEACHER_KEY = 'classhero_current_teacher_id';
+
+    // Danh sách giáo viên mẫu ban đầu
+    const DEFAULT_TEACHERS = [
+      {
+        id: 'teacher-1',
+        name: 'Thầy Nguyễn Văn An',
+        phone: '0988123456',
+        password: 'password123',
+        school: 'Trường Tiểu học Chu Văn An',
+        subject: 'math',
+        gender: 'male',
+        avatarSeed: 'TeacherAn',
+        createdAt: '2026-09-01'
+      },
+      {
+        id: 'teacher-2',
+        name: 'Cô Hoàng Thu Trang',
+        phone: '0912345678',
+        password: 'password123',
+        school: 'Trường Tiểu học Ánh Sáng',
+        subject: 'vietnamese',
+        gender: 'female',
+        avatarSeed: 'TeacherTrang',
+        createdAt: '2026-09-02'
+      }
+    ];
+
+    let currentTeacher = null;
+    let activeLoginMode = 'password'; // 'password' | 'otp'
+
+    // Phiên gửi mã OTP hiện tại
+    let activeOtpSession = {
+      phone: null,
+      code: null,
+      expiresAt: 0,
+      countdownSeconds: 0,
+      timerId: null
+    };
+
+    function loadTeachers() {
+      try {
+        const raw = localStorage.getItem(TEACHERS_STORAGE_KEY);
+        if (raw) {
+          const list = JSON.parse(raw);
+          if (Array.isArray(list) && list.length > 0) return list;
+        }
+      } catch (e) {
+        console.error('Lỗi khi tải danh sách giáo viên:', e);
+      }
+      saveTeachers(DEFAULT_TEACHERS);
+      return [...DEFAULT_TEACHERS];
+    }
+
+    function saveTeachers(teachers) {
+      try {
+        localStorage.setItem(TEACHERS_STORAGE_KEY, JSON.stringify(teachers));
+      } catch (e) {
+        console.error('Lỗi khi lưu danh sách giáo viên:', e);
+      }
+    }
+
+    function normalizePhone(phone) {
+      if (!phone) return '';
+      let cleaned = phone.replace(/[^0-9+]/g, '');
+      if (cleaned.startsWith('+84')) {
+        cleaned = '0' + cleaned.slice(3);
+      } else if (cleaned.startsWith('84')) {
+        cleaned = '0' + cleaned.slice(2);
+      }
+      return cleaned;
+    }
+
+    function isValidVietnamesePhone(phone) {
+      const normalized = normalizePhone(phone);
+      return /^(03|05|07|08|09)\d{8}$/.test(normalized);
+    }
+
+    function switchAuthTab(tab) {
+      const loginForm = document.getElementById('authLoginForm');
+      const registerForm = document.getElementById('authRegisterForm');
+      const tabLoginBtn = document.getElementById('authTabLoginBtn');
+      const tabRegisterBtn = document.getElementById('authTabRegisterBtn');
+
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        tabLoginBtn.className = "flex-1 py-2.5 text-xs sm:text-sm font-extrabold rounded-xl transition shadow-xs bg-white text-blue-600";
+        tabRegisterBtn.className = "flex-1 py-2.5 text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-800 rounded-xl transition";
+      } else {
+        registerForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+        tabRegisterBtn.className = "flex-1 py-2.5 text-xs sm:text-sm font-extrabold rounded-xl transition shadow-xs bg-white text-blue-600";
+        tabLoginBtn.className = "flex-1 py-2.5 text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-800 rounded-xl transition";
+      }
+    }
+
+    function setLoginMode(mode) {
+      activeLoginMode = mode;
+      const passField = document.getElementById('loginPasswordField');
+      const otpField = document.getElementById('loginOtpField');
+      const btnModePass = document.getElementById('btnModePassword');
+      const btnModeOtp = document.getElementById('btnModeOtp');
+
+      if (mode === 'password') {
+        passField.classList.remove('hidden');
+        otpField.classList.add('hidden');
+        btnModePass.className = "px-2.5 py-1 rounded-lg text-xs font-bold transition bg-blue-50 text-blue-700 border border-blue-200";
+        btnModeOtp.className = "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 transition";
+      } else {
+        otpField.classList.remove('hidden');
+        passField.classList.add('hidden');
+        btnModeOtp.className = "px-2.5 py-1 rounded-lg text-xs font-bold transition bg-blue-50 text-blue-700 border border-blue-200";
+        btnModePass.className = "px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 transition";
+      }
+    }
+
+    function togglePasswordVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (!input || !icon) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+      }
+    }
+
+    // ==================== BẢN TIN NHẮN SMS OTP MÔ PHỎNG ====================
+    let smsBannerTimeout = null;
+
+    function triggerSmsNotification(phone, code) {
+      const banner = document.getElementById('smsNotificationBanner');
+      const phoneDisplay = document.getElementById('smsTargetPhoneDisplay');
+      const codeDisplay = document.getElementById('smsOtpCodeDisplay');
+      if (!banner || !phoneDisplay || !codeDisplay) return;
+
+      phoneDisplay.textContent = phone;
+      codeDisplay.textContent = code;
+
+      banner.classList.remove('hidden');
+      banner.classList.add('flex');
+
+      // Âm thanh báo tin nhắn SMS tới
+      sound.playSmsChime();
+
+      if (smsBannerTimeout) clearTimeout(smsBannerTimeout);
+      smsBannerTimeout = setTimeout(() => {
+        dismissSmsBanner();
+      }, 30000);
+    }
+
+    function dismissSmsBanner() {
+      const banner = document.getElementById('smsNotificationBanner');
+      if (banner) {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+      }
+    }
+
+    function autoFillOtpCode() {
+      if (!activeOtpSession.code) return;
+      const regOtpInput = document.getElementById('regOtp');
+      const loginOtpInput = document.getElementById('loginOtp');
+      const isRegisterVisible = !document.getElementById('authRegisterForm').classList.contains('hidden');
+
+      if (isRegisterVisible && regOtpInput) {
+        regOtpInput.value = activeOtpSession.code;
+        regOtpInput.focus();
+      } else if (loginOtpInput) {
+        loginOtpInput.value = activeOtpSession.code;
+        loginOtpInput.focus();
+      }
+      sound.playTick();
+      showToast(`Đã tự động điền mã OTP: ${activeOtpSession.code}`, 'success');
+      dismissSmsBanner();
+    }
+
+    // ==================== GỬI MÃ OTP ĐĂNG KÝ VÀ ĐĂNG NHẬP ====================
+    function sendRegistrationOtp() {
+      const phoneInput = document.getElementById('regPhone');
+      const rawPhone = phoneInput.value.trim();
+      const normalizedPhone = normalizePhone(rawPhone);
+
+      if (!isValidVietnamesePhone(normalizedPhone)) {
+        alert('Vui lòng nhập số điện thoại Việt Nam hợp lệ (10 số, đầu số 03, 05, 07, 08, 09).');
+        phoneInput.focus();
+        return;
+      }
+
+      const teachers = loadTeachers();
+      const existing = teachers.find(t => t.phone === normalizedPhone);
+      if (existing) {
+        alert(`Số điện thoại ${normalizedPhone} đã được đăng ký cho "${existing.name}". Vui lòng chuyển sang tab "Đăng Nhập".`);
+        switchAuthTab('login');
+        document.getElementById('loginPhone').value = normalizedPhone;
+        return;
+      }
+
+      // Tạo mã OTP ngẫu nhiên 6 chữ số
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      activeOtpSession = {
+        phone: normalizedPhone,
+        code: code,
+        expiresAt: Date.now() + 3 * 60 * 1000,
+        countdownSeconds: 60,
+        timerId: null
+      };
+
+      // Đếm ngược 60s trên nút gửi
+      const btn = document.getElementById('btnSendRegOtp');
+      btn.disabled = true;
+      btn.classList.add('opacity-60', 'cursor-not-allowed');
+
+      if (activeOtpSession.timerId) clearInterval(activeOtpSession.timerId);
+      activeOtpSession.timerId = setInterval(() => {
+        activeOtpSession.countdownSeconds--;
+        if (activeOtpSession.countdownSeconds <= 0) {
+          clearInterval(activeOtpSession.timerId);
+          btn.disabled = false;
+          btn.classList.remove('opacity-60', 'cursor-not-allowed');
+          btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi Lại Mã`;
+        } else {
+          btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Gửi lại (${activeOtpSession.countdownSeconds}s)`;
+        }
+      }, 1000);
+
+      const helper = document.getElementById('regOtpHelperText');
+      if (helper) {
+        helper.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-600 mr-1"></i><span class="text-emerald-700 font-semibold">Đã gửi mã xác thực tới ${normalizedPhone}! Kiểm tra tin nhắn phía trên.</span>`;
+      }
+
+      triggerSmsNotification(normalizedPhone, code);
+      showToast(`Mã OTP đã được gửi về số ${normalizedPhone}!`, 'info');
+    }
+
+    function sendLoginOtp() {
+      const phoneInput = document.getElementById('loginPhone');
+      const rawPhone = phoneInput.value.trim();
+      const normalizedPhone = normalizePhone(rawPhone);
+
+      if (!isValidVietnamesePhone(normalizedPhone)) {
+        alert('Vui lòng nhập số điện thoại Việt Nam hợp lệ (10 số).');
+        phoneInput.focus();
+        return;
+      }
+
+      const teachers = loadTeachers();
+      const teacher = teachers.find(t => t.phone === normalizedPhone);
+      if (!teacher) {
+        alert(`Số điện thoại ${normalizedPhone} chưa có tài khoản. Thầy/Cô vui lòng chuyển sang tab "Đăng Ký Mới" để tạo tài khoản.`);
+        switchAuthTab('register');
+        document.getElementById('regPhone').value = normalizedPhone;
+        return;
+      }
+
+      const code = Math.floor(100000 + Math.random() * 900000).toString();
+      activeOtpSession = {
+        phone: normalizedPhone,
+        code: code,
+        expiresAt: Date.now() + 3 * 60 * 1000,
+        countdownSeconds: 60,
+        timerId: null
+      };
+
+      const btn = document.getElementById('btnSendLoginOtp');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Đã gửi (${activeOtpSession.countdownSeconds}s)`;
+
+      if (activeOtpSession.timerId) clearInterval(activeOtpSession.timerId);
+      activeOtpSession.timerId = setInterval(() => {
+        activeOtpSession.countdownSeconds--;
+        if (activeOtpSession.countdownSeconds <= 0) {
+          clearInterval(activeOtpSession.timerId);
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi lại OTP`;
+        } else {
+          btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Gửi lại (${activeOtpSession.countdownSeconds}s)`;
+        }
+      }, 1000);
+
+      triggerSmsNotification(normalizedPhone, code);
+      showToast(`Mã OTP đã gửi về ${normalizedPhone}!`, 'info');
+    }
+
+    // ==================== XỬ LÝ SUBMIT ĐĂNG KÝ ====================
+    function handleRegisterSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const gender = document.getElementById('regGender').value;
+      const school = document.getElementById('regSchool').value.trim();
+      const subject = document.getElementById('regSubject').value;
+      const rawPhone = document.getElementById('regPhone').value.trim();
+      const normalizedPhone = normalizePhone(rawPhone);
+      const otpEntered = document.getElementById('regOtp').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+      if (!isValidVietnamesePhone(normalizedPhone)) {
+        alert('Số điện thoại không hợp lệ.');
+        return;
+      }
+
+      if (!activeOtpSession.code || activeOtpSession.phone !== normalizedPhone) {
+        alert('Vui lòng nhấn nút "Gửi Mã OTP" để nhận mã xác thực qua tin nhắn số điện thoại trước.');
+        return;
+      }
+
+      if (Date.now() > activeOtpSession.expiresAt) {
+        alert('Mã OTP đã hết hiệu lực (sau 3 phút). Vui lòng nhấn gửi lại mã mới.');
+        return;
+      }
+
+      if (otpEntered !== activeOtpSession.code) {
+        alert('Mã OTP xác thực không chính xác! Vui lòng kiểm tra lại tin nhắn SMS phía trên màn hình.');
+        document.getElementById('regOtp').focus();
+        return;
+      }
+
+      if (password.length < 6) {
+        alert('Mật khẩu phải có độ dài từ 6 ký tự trở lên.');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert('Mật khẩu xác nhận không khớp! Vui lòng kiểm tra lại.');
+        return;
+      }
+
+      // Tạo tài khoản giáo viên mới
+      const newTeacher = {
+        id: 'teacher-' + Date.now(),
+        name: name,
+        phone: normalizedPhone,
+        password: password,
+        school: school,
+        subject: subject,
+        gender: gender,
+        avatarSeed: encodeURIComponent(name),
+        createdAt: new Date().toISOString()
+      };
+
+      const teachers = loadTeachers();
+      teachers.push(newTeacher);
+      saveTeachers(teachers);
+
+      // Đăng nhập ngay
+      currentTeacher = newTeacher;
+      localStorage.setItem(CURRENT_TEACHER_KEY, newTeacher.id);
+
+      dismissSmsBanner();
+      renderTeacherProfile();
+
+      // Hiển thị workspace lớp học
+      document.getElementById('authScreen').classList.add('hidden');
+      const appScreen = document.getElementById('appScreen');
+      appScreen.classList.remove('hidden');
+      appScreen.classList.add('flex');
+
+      // Tự động đồng bộ môn học phụ trách của Thầy/Cô vào selector
+      if (subject && subject !== 'all') {
+        appData.activeSubject = subject;
+        saveData(appData);
+      }
+
+      renderAll();
+      sound.playWin();
+
+      // Bắn pháo hoa ăn mừng đăng ký thành công!
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }
+
+      showToast(`🎉 Chào mừng ${newTeacher.name}! Đăng ký tài khoản thành công.`);
+    }
+
+    // ==================== XỬ LÝ SUBMIT ĐĂNG NHẬP ====================
+    function handleLoginSubmit(event) {
+      event.preventDefault();
+      const rawPhone = document.getElementById('loginPhone').value.trim();
+      const normalizedPhone = normalizePhone(rawPhone);
+
+      if (!isValidVietnamesePhone(normalizedPhone)) {
+        alert('Vui lòng nhập số điện thoại hợp lệ.');
+        return;
+      }
+
+      const teachers = loadTeachers();
+      const teacher = teachers.find(t => t.phone === normalizedPhone);
+
+      if (!teacher) {
+        alert(`Không tìm thấy tài khoản với số điện thoại ${normalizedPhone}. Thầy/Cô vui lòng chuyển sang tab Đăng Ký.`);
+        return;
+      }
+
+      if (activeLoginMode === 'password') {
+        const password = document.getElementById('loginPassword').value;
+        if (teacher.password !== password) {
+          alert('Mật khẩu không chính xác! Vui lòng thử lại hoặc chọn đăng nhập bằng "Mã OTP SMS".');
+          return;
+        }
+      } else {
+        // Chế độ OTP
+        const otpEntered = document.getElementById('loginOtp').value.trim();
+        if (!activeOtpSession.code || activeOtpSession.phone !== normalizedPhone) {
+          alert('Vui lòng nhấn nút "Gửi Mã OTP" để nhận mã xác thực qua tin nhắn trước.');
+          return;
+        }
+        if (Date.now() > activeOtpSession.expiresAt) {
+          alert('Mã OTP đã hết hiệu lực. Vui lòng bấm gửi lại mã mới.');
+          return;
+        }
+        if (otpEntered !== activeOtpSession.code) {
+          alert('Mã xác thực OTP không chính xác. Vui lòng kiểm tra lại tin nhắn SMS.');
+          return;
+        }
+      }
+
+      // Đăng nhập thành công
+      currentTeacher = teacher;
+      const remember = document.getElementById('rememberLogin').checked;
+      if (remember) {
+        localStorage.setItem(CURRENT_TEACHER_KEY, teacher.id);
+      }
+
+      dismissSmsBanner();
+      renderTeacherProfile();
+
+      document.getElementById('authScreen').classList.add('hidden');
+      const appScreen = document.getElementById('appScreen');
+      appScreen.classList.remove('hidden');
+      appScreen.classList.add('flex');
+
+      renderAll();
+      sound.playWin();
+      showToast(`Chào mừng ${teacher.name} đã đăng nhập!`);
+    }
+
+    // Đăng nhập nhanh tài khoản demo
+    function quickDemoLogin(teacherId) {
+      const teachers = loadTeachers();
+      const t = teachers.find(x => x.id === teacherId) || teachers[0];
+      if (!t) return;
+
+      currentTeacher = t;
+      localStorage.setItem(CURRENT_TEACHER_KEY, t.id);
+
+      renderTeacherProfile();
+      document.getElementById('authScreen').classList.add('hidden');
+      const appScreen = document.getElementById('appScreen');
+      appScreen.classList.remove('hidden');
+      appScreen.classList.add('flex');
+
+      renderAll();
+      sound.playTick();
+      showToast(`Đã đăng nhập với tài khoản: ${t.name}`);
+    }
+
+    // Đăng xuất
+    function handleLogout() {
+      currentTeacher = null;
+      localStorage.removeItem(CURRENT_TEACHER_KEY);
+
+      const menu = document.getElementById('teacherDropdownMenu');
+      if (menu) menu.classList.add('hidden');
+
+      const appScreen = document.getElementById('appScreen');
+      appScreen.classList.add('hidden');
+      appScreen.classList.remove('flex');
+
+      const authScreen = document.getElementById('authScreen');
+      authScreen.classList.remove('hidden');
+
+      showToast('Đã đăng xuất tài khoản thành công.', 'info');
+    }
+
+    // Hiển thị thông tin Thầy/Cô trên thanh Header
+    function renderTeacherProfile() {
+      if (!currentTeacher) return;
+      const avatarUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${currentTeacher.avatarSeed || currentTeacher.name}`;
+
+      const headerAvatar = document.getElementById('headerTeacherAvatar');
+      const headerName = document.getElementById('headerTeacherName');
+      const headerSubject = document.getElementById('headerTeacherSubject');
+
+      if (headerAvatar) headerAvatar.src = avatarUrl;
+      if (headerName) headerName.textContent = currentTeacher.name;
+      if (headerSubject) headerSubject.textContent = getSubjectName(currentTeacher.subject);
+
+      const menuAvatar = document.getElementById('menuTeacherAvatar');
+      const menuFullName = document.getElementById('menuTeacherFullName');
+      const menuPhone = document.getElementById('menuTeacherPhone');
+      const menuSchool = document.getElementById('menuTeacherSchool');
+      const menuSubjectBadge = document.getElementById('menuTeacherSubjectBadge');
+
+      if (menuAvatar) menuAvatar.src = avatarUrl;
+      if (menuFullName) menuFullName.textContent = currentTeacher.name;
+      if (menuPhone) menuPhone.textContent = currentTeacher.phone;
+      if (menuSchool) menuSchool.textContent = currentTeacher.school;
+      if (menuSubjectBadge) menuSubjectBadge.textContent = getSubjectName(currentTeacher.subject);
+    }
+
+    function toggleTeacherMenu() {
+      const menu = document.getElementById('teacherDropdownMenu');
+      if (menu) {
+        menu.classList.toggle('hidden');
+      }
+    }
+
+    // Chỉnh sửa hồ sơ giáo viên
+    function openEditTeacherProfileModal() {
+      if (!currentTeacher) return;
+      document.getElementById('editProfileName').value = currentTeacher.name || '';
+      document.getElementById('editProfileSchool').value = currentTeacher.school || '';
+      document.getElementById('editProfileSubject').value = currentTeacher.subject || 'math';
+      document.getElementById('editProfilePhone').value = currentTeacher.phone || '';
+      openModal('editTeacherProfileModal');
+    }
+
+    function handleUpdateTeacherProfile(event) {
+      event.preventDefault();
+      if (!currentTeacher) return;
+
+      const newName = document.getElementById('editProfileName').value.trim();
+      const newSchool = document.getElementById('editProfileSchool').value.trim();
+      const newSubject = document.getElementById('editProfileSubject').value;
+
+      currentTeacher.name = newName;
+      currentTeacher.school = newSchool;
+      currentTeacher.subject = newSubject;
+      currentTeacher.avatarSeed = encodeURIComponent(newName);
+
+      const teachers = loadTeachers();
+      const idx = teachers.findIndex(t => t.id === currentTeacher.id);
+      if (idx !== -1) {
+        teachers[idx] = currentTeacher;
+        saveTeachers(teachers);
+      }
+
+      renderTeacherProfile();
+      closeModal('editTeacherProfileModal');
+      showToast('Đã cập nhật thông tin Thầy/Cô thành công!');
+    }
+
     // ==================== RENDER TẤT CẢ GIAO DIỆN ====================
     function renderSubjectSelector() {
       const select = document.getElementById('subjectSelector');
@@ -2782,6 +3745,7 @@
     function renderAll() {
       renderClassSelector();
       renderSubjectSelector();
+      renderTeacherProfile();
       renderStudents();
       if (currentTab === 'wheel') drawWheel();
       if (currentTab === 'duckrace') renderDuckRaceTrack();
@@ -2798,7 +3762,38 @@
       if (dateInput) {
         dateInput.value = new Date().toISOString().split('T')[0];
       }
-      renderAll();
+
+      // Kiểm tra trạng thái đăng nhập của giáo viên
+      const savedTeacherId = localStorage.getItem(CURRENT_TEACHER_KEY);
+      const teachers = loadTeachers();
+      const matched = teachers.find(t => t.id === savedTeacherId);
+
+      const authScreen = document.getElementById('authScreen');
+      const appScreen = document.getElementById('appScreen');
+
+      if (matched) {
+        currentTeacher = matched;
+        authScreen.classList.add('hidden');
+        appScreen.classList.remove('hidden');
+        appScreen.classList.add('flex');
+        renderAll();
+      } else {
+        // Chưa đăng nhập: hiển thị cổng đăng nhập / đăng ký
+        authScreen.classList.remove('hidden');
+        appScreen.classList.add('hidden');
+        appScreen.classList.remove('flex');
+      }
+
+      // Đóng dropdown menu khi bấm ra ngoài
+      document.addEventListener('click', (e) => {
+        const menu = document.getElementById('teacherDropdownMenu');
+        const btn = document.getElementById('btnTeacherProfile');
+        if (menu && !menu.classList.contains('hidden')) {
+          if (!menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.add('hidden');
+          }
+        }
+      });
     });
   </script>
 </body>
