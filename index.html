@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quản Lý Lớp Học & Đánh Giá Học Sinh</title>
-  <meta name="description" content="Ứng dụng web hỗ trợ giáo viên quản lý lớp học, tổ chức vòng quay may mắn, cộng trừ điểm thưởng và đánh giá học sinh." />
+  <meta name="description" content="Ứng dụng web hỗ trợ giáo viên quản lý lớp học, tổ chức đua vịt vui nhộn, chia nhóm tự động, vòng quay may mắn, cộng trừ điểm thưởng theo từng môn học và đánh giá học sinh." />
   <meta property="og:title" content="Quản Lý Lớp Học & Đánh Giá Học Sinh" />
-  <meta property="og:description" content="Ứng dụng web hỗ trợ giáo viên quản lý lớp học, tổ chức vòng quay may mắn, cộng trừ điểm thưởng và đánh giá học sinh." />
+  <meta property="og:description" content="Ứng dụng web hỗ trợ giáo viên quản lý lớp học, tổ chức đua vịt vui nhộn, chia nhóm tự động, vòng quay may mắn, cộng trừ điểm thưởng theo từng môn học và đánh giá học sinh." />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -79,22 +79,40 @@
           </div>
         </div>
 
-        <!-- Class Selector & Quick Actions -->
-        <div class="flex items-center gap-2 sm:gap-4">
-          <div class="flex items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
-            <span class="text-xs font-semibold text-slate-500 pl-2 hidden sm:inline"><i class="fa-solid fa-school text-blue-500 mr-1"></i>Lớp:</span>
-            <select id="classSelector" onchange="handleClassChange(this.value)" class="bg-white text-sm font-bold text-slate-800 rounded-lg px-3 py-1.5 border border-slate-200 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden">
+        <!-- Class & Subject Selector & Quick Actions -->
+        <div class="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
+          <!-- Class Selector -->
+          <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+            <span class="text-xs font-semibold text-slate-500 pl-2 hidden lg:inline"><i class="fa-solid fa-school text-blue-500 mr-1"></i>Lớp:</span>
+            <select id="classSelector" onchange="handleClassChange(this.value)" class="bg-white text-xs sm:text-sm font-bold text-slate-800 rounded-lg px-2 sm:px-3 py-1.5 border border-slate-200 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden">
               <!-- Options populated by JS -->
             </select>
-            <button onclick="openModal('createClassModal')" title="Thêm lớp mới" class="w-8 h-8 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition flex items-center justify-center text-xs font-bold shadow-xs">
+            <button onclick="openModal('createClassModal')" title="Thêm lớp mới" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition flex items-center justify-center text-xs font-bold shadow-xs">
               <i class="fa-solid fa-plus"></i>
             </button>
-            <button onclick="openEditClassModal()" title="Chỉnh sửa lớp hiện tại" class="w-8 h-8 rounded-lg bg-white text-slate-600 hover:text-blue-600 hover:bg-slate-50 border border-slate-200 transition flex items-center justify-center text-xs">
+            <button onclick="openEditClassModal()" title="Chỉnh sửa lớp hiện tại" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-white text-slate-600 hover:text-blue-600 hover:bg-slate-50 border border-slate-200 transition flex items-center justify-center text-xs">
               <i class="fa-solid fa-gear"></i>
             </button>
           </div>
 
-          <button onclick="openModal('bulkAddStudentModal')" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-xs">
+          <!-- Subject Selector (Môn học) -->
+          <div class="flex items-center gap-1.5 bg-amber-50 p-1.5 rounded-xl border border-amber-200">
+            <span class="text-xs font-semibold text-amber-700 pl-2 hidden sm:inline"><i class="fa-solid fa-book-open text-amber-600 mr-1"></i>Môn:</span>
+            <select id="subjectSelector" onchange="handleSubjectChange(this.value)" class="bg-white text-xs sm:text-sm font-bold text-amber-900 rounded-lg px-2 sm:px-3 py-1.5 border border-amber-200 shadow-xs focus:ring-2 focus:ring-amber-500 focus:outline-hidden">
+              <option value="all">🌟 Tất Cả Môn (Chung)</option>
+              <option value="math">📐 Toán Học</option>
+              <option value="vietnamese">📖 Tiếng Việt / Ngữ Văn</option>
+              <option value="english">🌍 Tiếng Anh</option>
+              <option value="science">🔬 Khoa Học / TN-XH</option>
+              <option value="history">🏛️ Lịch Sử - Địa Lý</option>
+              <option value="it">💻 Tin Học</option>
+              <option value="art">🎨 Mỹ Thuật</option>
+              <option value="music">🎵 Âm Nhạc</option>
+              <option value="ethics">🌟 Đạo Đức / Kỹ Năng</option>
+            </select>
+          </div>
+
+          <button onclick="openModal('bulkAddStudentModal')" class="hidden md:inline-flex items-center gap-2 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow-xs">
             <i class="fa-solid fa-user-plus"></i>
             <span>Thêm Học Sinh</span>
           </button>
@@ -102,31 +120,39 @@
       </div>
 
       <!-- Navigation Tabs -->
-      <nav class="flex space-x-1 sm:space-x-4 border-t border-slate-100 pt-1 overflow-x-auto custom-scroll" id="navTabs">
-        <button onclick="switchTab('students')" id="tabBtn-students" class="tab-btn px-4 py-2.5 text-sm font-bold rounded-t-lg border-b-2 border-blue-600 text-blue-600 flex items-center gap-2 whitespace-nowrap transition">
+      <nav class="flex space-x-1 sm:space-x-2 border-t border-slate-100 pt-1 overflow-x-auto custom-scroll" id="navTabs">
+        <button onclick="switchTab('students')" id="tabBtn-students" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold rounded-t-lg border-b-2 border-blue-600 text-blue-600 flex items-center gap-1.5 whitespace-nowrap transition">
           <i class="fa-solid fa-users"></i>
           <span>Danh Sách Học Sinh</span>
-          <span id="badgeStudentCount" class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-bold">0</span>
+          <span id="badgeStudentCount" class="text-[11px] px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-700 font-bold">0</span>
         </button>
-        <button onclick="switchTab('wheel')" id="tabBtn-wheel" class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap transition">
-          <i class="fa-solid fa-dharmachakra text-amber-500"></i>
+        <button onclick="switchTab('duckrace')" id="tabBtn-duckrace" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 whitespace-nowrap transition">
+          <i class="fa-solid fa-flag-checkered text-amber-500"></i>
+          <span>Đua Vịt 🦆</span>
+        </button>
+        <button onclick="switchTab('groups')" id="tabBtn-groups" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 whitespace-nowrap transition">
+          <i class="fa-solid fa-people-group text-emerald-500"></i>
+          <span>Chia Nhóm 👥</span>
+        </button>
+        <button onclick="switchTab('wheel')" id="tabBtn-wheel" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 whitespace-nowrap transition">
+          <i class="fa-solid fa-dharmachakra text-orange-500"></i>
           <span>Vòng Quay May Mắn</span>
         </button>
-        <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <button onclick="switchTab('leaderboard')" id="tabBtn-leaderboard" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 whitespace-nowrap transition">
           <i class="fa-solid fa-trophy text-yellow-500"></i>
           <span>Bảng Xếp Hạng</span>
         </button>
-        <button onclick="switchTab('assessment')" id="tabBtn-assessment" class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <button onclick="switchTab('assessment')" id="tabBtn-assessment" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 whitespace-nowrap transition">
           <i class="fa-solid fa-book-bookmark text-purple-500"></i>
           <span>Nhật Ký Đánh Giá</span>
         </button>
-        <button onclick="switchTab('analytics')" id="tabBtn-analytics" class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap transition">
+        <button onclick="switchTab('analytics')" id="tabBtn-analytics" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 whitespace-nowrap transition">
           <i class="fa-solid fa-chart-pie text-cyan-500"></i>
-          <span>Thống Kê & Báo Cáo</span>
+          <span>Thống Kê</span>
         </button>
-        <button onclick="switchTab('settings')" id="tabBtn-settings" class="tab-btn px-4 py-2.5 text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 whitespace-nowrap transition">
-          <i class="fa-solid fa-file-export text-emerald-500"></i>
-          <span>Sao Lưu & Dữ Liệu</span>
+        <button onclick="switchTab('settings')" id="tabBtn-settings" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-1.5 whitespace-nowrap transition">
+          <i class="fa-solid fa-file-export text-slate-500"></i>
+          <span>Sao Lưu</span>
         </button>
       </nav>
     </div>
@@ -278,6 +304,136 @@
       </div>
     </section>
 
+    <!-- ==================== TAB: ĐUA VỊT HỌC TẬP (DUCK RACE) ==================== -->
+    <section id="tab-duckrace" class="tab-content hidden">
+      <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-xs mb-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+              <span class="text-2xl">🦆</span>
+              Đường Đua Vịt Vui Nhộn (Duck Race Challenge)
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">Cuộc đua kịch tính và hào hứng để chọn ra bạn chiến thắng hoặc thưởng điểm thi đua theo môn học!</p>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200 text-xs font-semibold">
+              <span class="text-slate-500 pl-1">Tham gia:</span>
+              <select id="duckRaceParticipantMode" onchange="prepareDuckRace()" class="bg-white text-xs font-bold text-slate-700 rounded-lg px-2.5 py-1 border border-slate-200 focus:ring-2 focus:ring-blue-500">
+                <option value="all">Tất cả học sinh trong lớp</option>
+                <option value="4">Ngẫu nhiên 4 bạn</option>
+                <option value="6" selected>Ngẫu nhiên 6 bạn</option>
+                <option value="8">Ngẫu nhiên 8 bạn</option>
+              </select>
+            </div>
+
+            <button id="btnStartDuckRace" onclick="startDuckRace()" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl text-xs font-extrabold shadow-md transition flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-flag-checkered"></i>
+              <span>Xuất Phát Cuộc Đua!</span>
+            </button>
+
+            <button onclick="prepareDuckRace()" title="Đặt lại vị trí xuất phát" class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs transition">
+              <i class="fa-solid fa-rotate-left"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water Race Track Container -->
+      <div class="bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 rounded-3xl p-3 sm:p-5 shadow-lg relative overflow-hidden border-4 border-sky-300">
+        <!-- Start & Finish Headers -->
+        <div class="flex justify-between items-center text-white/90 text-xs font-black uppercase tracking-wider mb-2 px-2">
+          <div class="flex items-center gap-1.5 bg-emerald-700/60 px-3 py-1 rounded-full border border-emerald-400/40">
+            <i class="fa-solid fa-flag text-emerald-300"></i> Vạch Xuất Phát (START)
+          </div>
+          <div class="flex items-center gap-1.5 bg-rose-700/60 px-3 py-1 rounded-full border border-rose-400/40">
+            <i class="fa-solid fa-flag-checkered text-amber-300"></i> ĐÍCH ĐẾN (FINISH)
+          </div>
+        </div>
+
+        <!-- Finish Line Checker Pattern Vertical Line -->
+        <div class="absolute right-6 sm:right-10 top-12 bottom-4 w-5 z-10 opacity-70 pointer-events-none" style="background-image: repeating-linear-gradient(0deg, #fff 0, #fff 10px, #000 10px, #000 20px); border-radius: 4px;"></div>
+
+        <!-- Lanes Track List -->
+        <div id="duckRaceLanes" class="space-y-2 relative z-20">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Race Result Podium & Quick Reward Strip -->
+      <div id="duckRacePodiumBox" class="mt-6 bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hidden">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-award text-amber-500"></i>
+              Bảng Vinh Quang Cuộc Đua Vịt
+            </h3>
+            <p class="text-xs text-slate-500">Các chú vịt xuất sắc cán đích đầu tiên</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="awardDuckRaceTop3()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-star"></i>
+              <span>Cộng Điểm Cho Top 3 (+5, +3, +1)</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="duckRaceTopWinners" class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 text-center">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB: CHIA NHÓM HỌC TẬP (GROUPS) ==================== -->
+    <section id="tab-groups" class="tab-content hidden">
+      <div class="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-xs mb-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-people-group text-emerald-600"></i>
+              Chia Nhóm Tự Động & Thi Đua Đội Nhóm
+            </h2>
+            <p class="text-xs text-slate-500 mt-1">Phân chia nhóm học tập nhanh chóng, cộng trừ điểm thưởng thi đua cho cả nhóm theo môn học.</p>
+          </div>
+
+          <!-- Configuration Controls -->
+          <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200 text-xs font-semibold">
+              <span class="text-slate-500 pl-1">Số nhóm:</span>
+              <select id="groupCountSelect" class="bg-white text-xs font-bold text-slate-800 rounded-lg px-2.5 py-1 border border-slate-200 focus:ring-2 focus:ring-emerald-500">
+                <option value="2">2 Nhóm</option>
+                <option value="3">3 Nhóm</option>
+                <option value="4" selected>4 Nhóm</option>
+                <option value="5">5 Nhóm</option>
+                <option value="6">6 Nhóm</option>
+                <option value="8">8 Nhóm</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200 text-xs font-semibold">
+              <span class="text-slate-500 pl-1">Cách chia:</span>
+              <select id="groupSplitStrategy" class="bg-white text-xs font-bold text-slate-800 rounded-lg px-2.5 py-1 border border-slate-200 focus:ring-2 focus:ring-emerald-500">
+                <option value="random">🎲 Ngẫu nhiên</option>
+                <option value="balance_points">⚖️ Cân bằng điểm số</option>
+                <option value="balance_gender">👫 Cân bằng nam/nữ</option>
+              </select>
+            </div>
+
+            <button onclick="generateGroups()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-1.5">
+              <i class="fa-solid fa-shuffle"></i>
+              <span>Chia Nhóm Mới</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Groups Grid -->
+      <div id="groupsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
     <!-- ==================== TAB 3: BẢNG XẾP HẠNG ==================== -->
     <section id="tab-leaderboard" class="tab-content hidden">
       <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs mb-6">
@@ -296,7 +452,28 @@
         </div>
 
         <!-- Podium Top 3 -->
-        <div id="podiumContainer" class="mt-8 mb-6 grid grid-cols-3 gap-2 sm:gap-4 max-w-2xl mx-auto items-end pt-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-100">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-500"><i class="fa-solid fa-filter text-amber-500 mr-1"></i>Lọc môn:</span>
+            <select id="leaderboardSubjectFilter" onchange="renderLeaderboard()" class="bg-slate-50 text-xs font-bold text-slate-800 rounded-lg px-2.5 py-1.5 border border-slate-200 focus:ring-2 focus:ring-amber-500">
+              <option value="all">🌟 Tất Cả Môn (Tổng Điểm)</option>
+              <option value="math">📐 Toán Học</option>
+              <option value="vietnamese">📖 Tiếng Việt / Ngữ Văn</option>
+              <option value="english">🌍 Tiếng Anh</option>
+              <option value="science">🔬 Khoa Học / TN-XH</option>
+              <option value="history">🏛️ Lịch Sử - Địa Lý</option>
+              <option value="it">💻 Tin Học</option>
+              <option value="art">🎨 Mỹ Thuật</option>
+              <option value="music">🎵 Âm Nhạc</option>
+              <option value="ethics">🌟 Đạo Đức / Kỹ Năng</option>
+            </select>
+          </div>
+          <div class="text-xs text-slate-500">
+            Đang xếp hạng theo: <span id="lblRankSubjectName" class="font-bold text-amber-700">Tất cả các môn</span>
+          </div>
+        </div>
+
+        <div id="podiumContainer" class="mt-4 mb-6 grid grid-cols-3 gap-2 sm:gap-4 max-w-2xl mx-auto items-end pt-4">
           <!-- Rendered dynamically -->
         </div>
       </div>
@@ -718,6 +895,35 @@
     </div>
   </div>
 
+  <!-- Modal 6: Student Subject Scores Breakdown Modal -->
+  <div id="studentSubjectScoresModal" class="modal-backdrop fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-graduation-cap text-blue-600"></i>
+          Chi Tiết Điểm Từng Môn Học
+        </h3>
+        <button onclick="closeModal('studentSubjectScoresModal')" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div id="studentScoreHeaderInfo" class="mb-4 p-3 bg-slate-50 rounded-xl flex items-center gap-3">
+        <!-- Injected by JS -->
+      </div>
+
+      <div class="space-y-2 mb-5 max-h-72 overflow-y-auto custom-scroll pr-1" id="studentSubjectScoresList">
+        <!-- Injected by JS -->
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-slate-100">
+        <button type="button" onclick="closeModal('studentSubjectScoresModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT LOGIC (ES6+) -->
   <script>
     /**
@@ -803,6 +1009,31 @@
     let pickHistory = [];
     let selectedStudentForReward = null;
 
+    // Danh mục các môn học hỗ trợ chấm điểm và thi đua
+    const SUBJECTS = [
+      { id: 'math', name: 'Toán Học', icon: 'fa-calculator', color: 'blue' },
+      { id: 'vietnamese', name: 'Tiếng Việt / Ngữ Văn', icon: 'fa-book-open', color: 'rose' },
+      { id: 'english', name: 'Tiếng Anh', icon: 'fa-earth-americas', color: 'amber' },
+      { id: 'science', name: 'Khoa Học / TN-XH', icon: 'fa-flask', color: 'emerald' },
+      { id: 'history', name: 'Lịch Sử - Địa Lý', icon: 'fa-landmark', color: 'yellow' },
+      { id: 'it', name: 'Tin Học', icon: 'fa-laptop-code', color: 'indigo' },
+      { id: 'art', name: 'Mỹ Thuật', icon: 'fa-palette', color: 'purple' },
+      { id: 'music', name: 'Âm Nhạc', icon: 'fa-music', color: 'pink' },
+      { id: 'ethics', name: 'Đạo Đức / Kỹ Năng', icon: 'fa-star', color: 'teal' }
+    ];
+
+    function getSubjectName(subId) {
+      if (!subId || subId === 'all') return 'Tất Cả Môn (Chung)';
+      const s = SUBJECTS.find(x => x.id === subId);
+      return s ? s.name : subId;
+    }
+
+    function getStudentSubjectPoints(student, subId) {
+      if (!student) return 0;
+      if (!subId || subId === 'all') return student.points || 0;
+      return (student.subjectPoints && student.subjectPoints[subId]) || 0;
+    }
+
     // Quản lý âm thanh bằng Web Audio API (không cần tải file ngoài)
     class SoundEffects {
       constructor() {
@@ -832,6 +1063,40 @@
           osc.stop(this.ctx.currentTime + 0.05);
         } catch (e) {}
       }
+      playWhistle() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1800, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(2400, this.ctx.currentTime + 0.18);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.22);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.22);
+        } catch (e) {}
+      }
+      playQuack() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(360, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(220, this.ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.16);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.16);
+        } catch (e) {}
+      }
       playWin() {
         try {
           this.init();
@@ -859,20 +1124,43 @@
     let categoryChartInstance = null;
 
     // ==================== KHỞI TẠO VÀ LƯU DỮ LIỆU LOCALSTORAGE ====================
+    function ensureDataIntegrity(data) {
+      if (!data) return;
+      if (!data.activeSubject) data.activeSubject = 'all';
+      if (!data.classGroups) data.classGroups = {};
+      if (data.students) {
+        data.students.forEach(s => {
+          if (!s.subjectPoints) {
+            const mathPt = Math.max(0, Math.round(s.points * 0.4));
+            const vietPt = Math.max(0, Math.round(s.points * 0.35));
+            const engPt = Math.max(0, s.points - mathPt - vietPt);
+            s.subjectPoints = {
+              math: mathPt,
+              vietnamese: vietPt,
+              english: engPt
+            };
+          }
+        });
+      }
+    }
+
     function loadData() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && parsed.classes && parsed.classes.length > 0) {
+            ensureDataIntegrity(parsed);
             return parsed;
           }
         }
       } catch (e) {
         console.error('Lỗi khi đọc LocalStorage:', e);
       }
-      saveData(DEFAULT_DATA);
-      return JSON.parse(JSON.stringify(DEFAULT_DATA));
+      const initial = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      ensureDataIntegrity(initial);
+      saveData(initial);
+      return initial;
     }
 
     function saveData(data) {
@@ -885,6 +1173,14 @@
 
     function syncState() {
       saveData(appData);
+      renderAll();
+    }
+
+    function handleSubjectChange(val) {
+      appData.activeSubject = val;
+      saveData(appData);
+      const subjName = getSubjectName(val);
+      showToast(`Đã chọn môn học: ${subjName}`, 'info');
       renderAll();
     }
 
@@ -938,6 +1234,10 @@
       // Xử lý vẽ khi vào tab
       if (tabId === 'wheel') {
         drawWheel();
+      } else if (tabId === 'duckrace') {
+        prepareDuckRace();
+      } else if (tabId === 'groups') {
+        renderGroups();
       } else if (tabId === 'leaderboard') {
         renderLeaderboard();
       } else if (tabId === 'analytics') {
@@ -1144,13 +1444,27 @@
               </button>
             </div>
 
-            <!-- Total Points Pill -->
-            <div class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-xl mb-3 border border-slate-100">
-              <span class="text-xs font-semibold text-slate-500">Điểm tích lũy:</span>
-              <span class="text-base font-extrabold text-blue-600 flex items-center gap-1">
-                <i class="fa-solid fa-star text-amber-400 text-xs"></i>
-                ${student.points}
-              </span>
+            <!-- Points Display (Subject Specific & Total) -->
+            <div class="bg-slate-50 p-2.5 rounded-xl mb-3 border border-slate-100">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                  ${appData.activeSubject && appData.activeSubject !== 'all' 
+                    ? `<span class="px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-800 text-[10px] font-bold">${getSubjectName(appData.activeSubject)}</span>` 
+                    : 'Tổng điểm:'}
+                </span>
+                <span class="text-base font-extrabold ${appData.activeSubject && appData.activeSubject !== 'all' ? 'text-amber-600' : 'text-blue-600'} flex items-center gap-1">
+                  <i class="fa-solid fa-star text-amber-400 text-xs"></i>
+                  ${appData.activeSubject && appData.activeSubject !== 'all' 
+                    ? (student.subjectPoints?.[appData.activeSubject] || 0) 
+                    : student.points}đ
+                </span>
+              </div>
+              <div class="flex items-center justify-between pt-1.5 mt-1.5 border-t border-slate-200/60 text-[11px] text-slate-400">
+                <span>Tổng: <strong class="text-slate-700">${student.points}đ</strong></span>
+                <button onclick="openStudentSubjectModal('${student.id}')" class="text-blue-600 hover:text-blue-800 font-bold hover:underline flex items-center gap-1">
+                  <i class="fa-solid fa-chart-simple text-[10px]"></i>Bảng điểm
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1186,15 +1500,91 @@
       if (!student) return;
 
       student.points = Math.max(0, student.points + delta);
+      
+      // Ghi nhận điểm cho môn học hiện tại
+      const activeSub = appData.activeSubject || 'all';
+      if (activeSub !== 'all') {
+        student.subjectPoints = student.subjectPoints || {};
+        student.subjectPoints[activeSub] = Math.max(0, (student.subjectPoints[activeSub] || 0) + delta);
+      }
+
       if (delta > 0) {
         student.praises = (student.praises || 0) + 1;
         sound.playTick();
-        showToast(`+${delta} điểm cho ${student.name}! 🌟`, 'reward');
+        const subLabel = activeSub !== 'all' ? ` [${getSubjectName(activeSub)}]` : '';
+        showToast(`+${delta} điểm${subLabel} cho ${student.name}! 🌟`, 'reward');
       } else {
         showToast(`${delta} điểm với ${student.name}`, 'info');
       }
 
       syncState();
+    }
+
+    // Modal hiển thị bảng điểm chi tiết các môn học của học sinh
+    function openStudentSubjectModal(studentId) {
+      const student = appData.students.find(s => s.id === studentId);
+      if (!student) return;
+
+      const header = document.getElementById('studentScoreHeaderInfo');
+      const list = document.getElementById('studentSubjectScoresList');
+
+      header.innerHTML = `
+        <img src="${getAvatarUrl(student.avatarSeed, student.gender)}" class="w-12 h-12 rounded-full border-2 border-blue-200 bg-white" />
+        <div class="flex-1">
+          <h4 class="text-sm font-bold text-slate-900">${student.name}</h4>
+          <p class="text-xs text-slate-500">${getCurrentClass().name} | ${student.gender === 'female' ? 'Nữ 👧' : 'Nam 👦'}</p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-slate-400 block font-medium">Tổng điểm</span>
+          <span class="text-lg font-black text-blue-600">${student.points}đ</span>
+        </div>
+      `;
+
+      list.innerHTML = '';
+      SUBJECTS.forEach(sub => {
+        const pts = (student.subjectPoints && student.subjectPoints[sub.id]) || 0;
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-100 hover:bg-slate-100/70 transition';
+        row.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-600 text-xs shadow-2xs">
+              <i class="fa-solid ${sub.icon}"></i>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold text-slate-800">${sub.name}</h5>
+              <span class="text-[10px] text-slate-400">Điểm thi đua môn</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-extrabold text-slate-800 w-8 text-right">${pts}đ</span>
+            <div class="flex items-center gap-1">
+              <button onclick="updateStudentSingleSubjectScore('${student.id}', '${sub.id}', 1)" class="w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-600 hover:text-white text-emerald-800 text-xs font-bold transition flex items-center justify-center">
+                +1
+              </button>
+              <button onclick="updateStudentSingleSubjectScore('${student.id}', '${sub.id}', -1)" class="w-7 h-7 rounded-lg bg-rose-100 hover:bg-rose-600 hover:text-white text-rose-800 text-xs font-bold transition flex items-center justify-center">
+                -1
+              </button>
+            </div>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+
+      openModal('studentSubjectScoresModal');
+    }
+
+    function updateStudentSingleSubjectScore(studentId, subjectId, delta) {
+      const student = appData.students.find(s => s.id === studentId);
+      if (!student) return;
+
+      student.subjectPoints = student.subjectPoints || {};
+      student.subjectPoints[subjectId] = Math.max(0, (student.subjectPoints[subjectId] || 0) + delta);
+      student.points = Math.max(0, student.points + delta);
+      if (delta > 0) student.praises = (student.praises || 0) + 1;
+
+      sound.playTick();
+      syncState();
+      openStudentSubjectModal(studentId); // re-render modal
     }
 
     function deleteStudentConfirm(studentId) {
@@ -1470,14 +1860,497 @@
       renderPickHistory();
     }
 
+    // ==================== TRÒ CHƠI ĐUA VỊT (DUCK RACE) ====================
+    let duckRaceState = {
+      racers: [],
+      isRacing: false,
+      timer: null,
+      winners: []
+    };
+
+    const DUCK_COLORS = [
+      { bg: '#fbbf24', border: '#d97706', name: 'Vàng Nghịch Ngợm 🐥' },
+      { bg: '#f87171', border: '#dc2626', name: 'Đỏ Siêu Tốc 🦆' },
+      { bg: '#60a5fa', border: '#2563eb', name: 'Xanh Nhanh Nhẹn 🦆' },
+      { bg: '#34d399', border: '#059669', name: 'Xanh Lá Tinh Nghịch 🦆' },
+      { bg: '#c084fc', border: '#9333ea', name: 'Tím Quý Phái 🦆' },
+      { bg: '#f472b6', border: '#db2777', name: 'Hồng Đáng Yêu 🦆' },
+      { bg: '#fb923c', border: '#ea580c', name: 'Cam Năng Lượng 🦆' },
+      { bg: '#38bdf8', border: '#0284c7', name: 'Xanh Biển Nhiệt Huyết 🦆' }
+    ];
+
+    function prepareDuckRace() {
+      if (duckRaceState.isRacing) {
+        cancelAnimationFrame(duckRaceState.timer);
+        duckRaceState.isRacing = false;
+      }
+
+      const students = getActiveStudents();
+      const mode = document.getElementById('duckRaceParticipantMode')?.value || '6';
+      let selectedStudents = [];
+
+      if (students.length === 0) {
+        document.getElementById('duckRaceLanes').innerHTML = `
+          <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-8 text-center text-slate-600 font-bold text-sm">
+            Chưa có học sinh trong lớp học này. Vui lòng thêm học sinh để bắt đầu đua vịt!
+          </div>
+        `;
+        document.getElementById('duckRacePodiumBox')?.classList.add('hidden');
+        return;
+      }
+
+      if (mode === 'all') {
+        selectedStudents = [...students];
+      } else {
+        const count = Math.min(parseInt(mode, 10), students.length);
+        const shuffled = [...students].sort(() => 0.5 - Math.random());
+        selectedStudents = shuffled.slice(0, count);
+      }
+
+      duckRaceState.racers = selectedStudents.map((s, idx) => ({
+        studentId: s.id,
+        name: s.name,
+        gender: s.gender,
+        avatarSeed: s.avatarSeed,
+        duckColor: DUCK_COLORS[idx % DUCK_COLORS.length],
+        x: 0,
+        baseSpeed: 0.18 + Math.random() * 0.12,
+        finished: false,
+        rank: null
+      }));
+
+      duckRaceState.winners = [];
+      document.getElementById('duckRacePodiumBox')?.classList.add('hidden');
+      const startBtn = document.getElementById('btnStartDuckRace');
+      if (startBtn) {
+        startBtn.disabled = false;
+        startBtn.innerHTML = '<i class="fa-solid fa-flag-checkered"></i><span>Xuất Phát Cuộc Đua!</span>';
+      }
+
+      renderDuckRaceTrack();
+    }
+
+    function renderDuckRaceTrack() {
+      const container = document.getElementById('duckRaceLanes');
+      if (!container) return;
+
+      container.innerHTML = '';
+      duckRaceState.racers.forEach((racer, index) => {
+        const lane = document.createElement('div');
+        lane.className = 'relative h-14 bg-sky-200/40 border border-white/40 rounded-2xl overflow-hidden flex items-center px-3 shadow-inner backdrop-blur-xs transition';
+        lane.id = `duck-lane-${index}`;
+        
+        lane.innerHTML = `
+          <div class="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/80 text-sky-900 font-black text-xs flex items-center justify-center shadow-xs z-10">
+            ${index + 1}
+          </div>
+
+          <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#fff 15%, transparent 16%); background-size: 16px 16px;"></div>
+
+          <div id="duck-item-${index}" class="absolute top-1/2 -translate-y-1/2 flex items-center gap-2 transition-transform duration-75 z-20" style="left: ${racer.x}%;">
+            <div class="relative group cursor-pointer" onclick="sound.playQuack()">
+              <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl shadow-md border-2 border-white transform transition hover:scale-110" style="background-color: ${racer.duckColor.bg}; border-color: ${racer.duckColor.border};">
+                <span>🦆</span>
+              </div>
+              <img src="${getAvatarUrl(racer.avatarSeed, racer.gender)}" class="w-5 h-5 rounded-full absolute -top-1 -right-1 border-2 border-white shadow-xs" />
+            </div>
+
+            <div class="bg-white/95 px-2 py-0.5 rounded-lg shadow-sm border border-sky-100 flex items-center gap-1 max-w-[130px] truncate">
+              <span class="text-[11px] font-bold text-slate-800 truncate">${racer.name}</span>
+              ${racer.rank ? `<span class="px-1 py-0.2 bg-amber-400 text-amber-950 font-black text-[9px] rounded-full">#${racer.rank}</span>` : ''}
+            </div>
+          </div>
+        `;
+        container.appendChild(lane);
+      });
+    }
+
+    function startDuckRace() {
+      if (duckRaceState.isRacing || duckRaceState.racers.length === 0) return;
+
+      duckRaceState.isRacing = true;
+      duckRaceState.winners = [];
+      sound.init();
+      sound.playWhistle();
+
+      const btn = document.getElementById('btnStartDuckRace');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Đang Đua Kịch Tính...</span>';
+      }
+
+      showToast('Tiếng còi vang lên! Cuộc đua vịt đã bắt đầu! 🦆💨', 'reward');
+
+      let lastQuackTime = Date.now();
+
+      function step() {
+        if (!duckRaceState.isRacing) return;
+
+        let allFinished = true;
+        const now = Date.now();
+        if (now - lastQuackTime > 1300 + Math.random() * 2000) {
+          sound.playQuack();
+          lastQuackTime = now;
+        }
+
+        duckRaceState.racers.forEach((racer, idx) => {
+          if (!racer.finished) {
+            allFinished = false;
+
+            let speedStep = racer.baseSpeed + (Math.random() * 0.45);
+            
+            if (Math.random() < 0.08) {
+              speedStep += 0.8 + Math.random() * 0.8;
+            }
+
+            if (Math.random() < 0.04) {
+              speedStep = Math.max(0.05, speedStep - 0.2);
+            }
+
+            racer.x += speedStep;
+
+            if (racer.x >= 84) {
+              racer.x = 84;
+              racer.finished = true;
+              duckRaceState.winners.push(racer);
+              racer.rank = duckRaceState.winners.length;
+              if (racer.rank <= 3) {
+                sound.playTick();
+              }
+            }
+
+            const duckEl = document.getElementById(`duck-item-${idx}`);
+            if (duckEl) {
+              duckEl.style.left = `${racer.x}%`;
+              if (racer.finished && racer.rank) {
+                const badge = duckEl.querySelector('span:last-child');
+                if (!badge || !badge.textContent.includes('#')) {
+                  const tag = document.createElement('span');
+                  tag.className = 'px-1.5 py-0.5 bg-amber-400 text-amber-950 font-black text-[10px] rounded-full animate-bounce';
+                  tag.textContent = `#${racer.rank}`;
+                  duckEl.querySelector('div:last-child')?.appendChild(tag);
+                }
+              }
+            }
+          }
+        });
+
+        if (!allFinished) {
+          duckRaceState.timer = requestAnimationFrame(step);
+        } else {
+          onDuckRaceComplete();
+        }
+      }
+
+      duckRaceState.timer = requestAnimationFrame(step);
+    }
+
+    function onDuckRaceComplete() {
+      duckRaceState.isRacing = false;
+      sound.playWin();
+
+      confetti({
+        particleCount: 120,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+
+      const btn = document.getElementById('btnStartDuckRace');
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-flag-checkered"></i><span>Đua Lại Vòng Mới</span>';
+      }
+
+      const podiumBox = document.getElementById('duckRacePodiumBox');
+      const topWinnersGrid = document.getElementById('duckRaceTopWinners');
+      if (podiumBox && topWinnersGrid) {
+        podiumBox.classList.remove('hidden');
+        topWinnersGrid.innerHTML = '';
+
+        const top3 = duckRaceState.winners.slice(0, 3);
+        const medals = [
+          { rank: 1, title: 'Quán Quân 🏆', badge: 'bg-amber-400 text-amber-950', ring: 'ring-amber-400', pts: '+5 sao' },
+          { rank: 2, title: 'Á Quân 🥈', badge: 'bg-slate-300 text-slate-800', ring: 'ring-slate-300', pts: '+3 sao' },
+          { rank: 3, title: 'Hạng Ba 🥉', badge: 'bg-amber-600 text-white', ring: 'ring-amber-600', pts: '+1 sao' }
+        ];
+
+        top3.forEach((w, i) => {
+          const m = medals[i];
+          const col = document.createElement('div');
+          col.className = 'p-4 rounded-2xl bg-gradient-to-b from-slate-50 to-white border border-slate-200/80 shadow-xs flex flex-col items-center justify-between';
+          col.innerHTML = `
+            <div class="relative mb-2">
+              <img src="${getAvatarUrl(w.avatarSeed, w.gender)}" class="w-14 h-14 rounded-full border-2 border-white ring-4 ${m.ring} shadow-md" />
+              <span class="absolute -bottom-1 -right-1 px-1.5 py-0.5 rounded-full text-[10px] font-black ${m.badge}">
+                #${m.rank}
+              </span>
+            </div>
+            <h4 class="font-extrabold text-sm text-slate-800 mt-1">${w.name}</h4>
+            <span class="text-xs font-bold text-slate-500 mt-0.5">${m.title}</span>
+            <span class="mt-2 px-2.5 py-1 bg-emerald-50 text-emerald-700 font-extrabold text-xs rounded-full border border-emerald-200">
+              ${m.pts}
+            </span>
+          `;
+          topWinnersGrid.appendChild(col);
+        });
+      }
+
+      showToast(`🎉 Chúc mừng bạn ${duckRaceState.winners[0]?.name} đã về nhất trong cuộc đua vịt!`, 'reward');
+    }
+
+    function awardDuckRaceTop3() {
+      if (!duckRaceState.winners || duckRaceState.winners.length === 0) return;
+
+      const top3 = duckRaceState.winners.slice(0, 3);
+      const pointsToAdd = [5, 3, 1];
+      const activeSub = appData.activeSubject || 'all';
+      const subName = getSubjectName(activeSub);
+
+      top3.forEach((w, idx) => {
+        const student = appData.students.find(s => s.id === w.studentId);
+        if (student) {
+          const pts = pointsToAdd[idx];
+          student.points += pts;
+          student.praises = (student.praises || 0) + 1;
+          if (activeSub !== 'all') {
+            student.subjectPoints = student.subjectPoints || {};
+            student.subjectPoints[activeSub] = (student.subjectPoints[activeSub] || 0) + pts;
+          }
+        }
+      });
+
+      confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
+      sound.playWin();
+      syncState();
+      showToast(`Đã trao điểm thưởng đua vịt cho Top 3 môn ${subName}!`, 'reward');
+    }
+
+    // ==================== CHIA NHÓM TỰ ĐỘNG & THI ĐUA ĐỘI NHÓM ====================
+    const GROUP_THEMES = [
+      { name: 'Đội Rồng Lửa 🐉', header: 'bg-red-500 text-white', light: 'bg-red-50/50', border: 'border-red-200', tag: 'bg-red-100 text-red-800' },
+      { name: 'Đội Phượng Hoàng 🔥', header: 'bg-orange-500 text-white', light: 'bg-orange-50/50', border: 'border-orange-200', tag: 'bg-orange-100 text-orange-800' },
+      { name: 'Đội Sư Tử 🦁', header: 'bg-amber-500 text-white', light: 'bg-amber-50/50', border: 'border-amber-200', tag: 'bg-amber-100 text-amber-800' },
+      { name: 'Đội Đại Bàng 🦅', header: 'bg-blue-600 text-white', light: 'bg-blue-50/50', border: 'border-blue-200', tag: 'bg-blue-100 text-blue-800' },
+      { name: 'Đội Cá Heo 🐬', header: 'bg-cyan-600 text-white', light: 'bg-cyan-50/50', border: 'border-cyan-200', tag: 'bg-cyan-100 text-cyan-800' },
+      { name: 'Đội Gấu Trúc 🐼', header: 'bg-emerald-600 text-white', light: 'bg-emerald-50/50', border: 'border-emerald-200', tag: 'bg-emerald-100 text-emerald-800' },
+      { name: 'Đội Kỳ Lân 🦄', header: 'bg-purple-600 text-white', light: 'bg-purple-50/50', border: 'border-purple-200', tag: 'bg-purple-100 text-purple-800' },
+      { name: 'Đội Báo Gấm 🐆', header: 'bg-pink-600 text-white', light: 'bg-pink-50/50', border: 'border-pink-200', tag: 'bg-pink-100 text-pink-800' }
+    ];
+
+    function generateGroups() {
+      const students = [...getActiveStudents()];
+      if (students.length === 0) {
+        showToast('Lớp hiện tại chưa có học sinh để chia nhóm!', 'error');
+        return;
+      }
+
+      const count = parseInt(document.getElementById('groupCountSelect')?.value || '4', 10);
+      const strategy = document.getElementById('groupSplitStrategy')?.value || 'random';
+
+      if (strategy === 'random') {
+        students.sort(() => 0.5 - Math.random());
+      } else if (strategy === 'balance_points') {
+        students.sort((a, b) => b.points - a.points);
+      } else if (strategy === 'balance_gender') {
+        const boys = students.filter(s => s.gender === 'male').sort(() => 0.5 - Math.random());
+        const girls = students.filter(s => s.gender === 'female').sort(() => 0.5 - Math.random());
+        const mixed = [];
+        const maxLen = Math.max(boys.length, girls.length);
+        for (let i = 0; i < maxLen; i++) {
+          if (boys[i]) mixed.push(boys[i]);
+          if (girls[i]) mixed.push(girls[i]);
+        }
+        students.length = 0;
+        students.push(...mixed);
+      }
+
+      const groups = Array.from({ length: count }, (_, i) => ({
+        id: 'group-' + (i + 1),
+        name: GROUP_THEMES[i % GROUP_THEMES.length].name,
+        theme: GROUP_THEMES[i % GROUP_THEMES.length],
+        members: []
+      }));
+
+      if (strategy === 'balance_points') {
+        let dir = 1;
+        let gIdx = 0;
+        students.forEach(s => {
+          groups[gIdx].members.push(s.id);
+          gIdx += dir;
+          if (gIdx >= count) {
+            gIdx = count - 1;
+            dir = -1;
+          } else if (gIdx < 0) {
+            gIdx = 0;
+            dir = 1;
+          }
+        });
+      } else {
+        students.forEach((s, idx) => {
+          groups[idx % count].members.push(s.id);
+        });
+      }
+
+      appData.classGroups = appData.classGroups || {};
+      appData.classGroups[appData.activeClassId] = groups;
+
+      sound.playWin();
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+      saveData(appData);
+      renderGroups();
+      showToast(`Đã chia lớp thành ${count} nhóm thành công! 🎉`);
+    }
+
+    function renderGroups() {
+      const grid = document.getElementById('groupsGrid');
+      if (!grid) return;
+
+      const groups = (appData.classGroups && appData.classGroups[appData.activeClassId]) || [];
+      const activeSub = appData.activeSubject || 'all';
+      const subName = getSubjectName(activeSub);
+
+      if (groups.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-white rounded-2xl p-10 text-center border border-dashed border-slate-200">
+            <div class="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto text-2xl mb-3">
+              <i class="fa-solid fa-people-group"></i>
+            </div>
+            <h3 class="font-bold text-slate-800 text-base">Chưa chia nhóm cho lớp này</h3>
+            <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">Chọn số nhóm mong muốn và nhấn "Chia Nhóm Mới" ở trên để tự động phân chia học sinh vào các nhóm học tập và thi đua.</p>
+            <button onclick="generateGroups()" class="mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-xs">
+              <i class="fa-solid fa-shuffle mr-1.5"></i>Tự Động Chia Nhóm Ngay
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = '';
+      groups.forEach((group, gIdx) => {
+        const memberStudents = group.members
+          .map(id => appData.students.find(s => s.id === id))
+          .filter(Boolean);
+
+        const groupTotalPoints = memberStudents.reduce((sum, s) => {
+          return sum + (activeSub === 'all' ? s.points : (s.subjectPoints?.[activeSub] || 0));
+        }, 0);
+
+        const card = document.createElement('div');
+        card.className = `bg-white rounded-2xl border ${group.theme.border} shadow-xs overflow-hidden flex flex-col justify-between`;
+        
+        card.innerHTML = `
+          <div>
+            <div class="p-3.5 ${group.theme.header} flex items-center justify-between shadow-xs">
+              <div class="flex items-center gap-2">
+                <span class="font-extrabold text-sm">${group.name}</span>
+                <span class="px-2 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-bold">
+                  ${memberStudents.length} bạn
+                </span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10px] uppercase tracking-wider opacity-80 block font-semibold">Điểm đội (${activeSub === 'all' ? 'Tổng' : subName})</span>
+                <span class="text-base font-black">${groupTotalPoints}đ</span>
+              </div>
+            </div>
+
+            <div class="px-3.5 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between gap-1.5">
+              <span class="text-[11px] font-bold text-slate-500">Chấm điểm cả nhóm:</span>
+              <div class="flex items-center gap-1">
+                <button onclick="updateGroupPoints(${gIdx}, 1)" title="Cộng 1 điểm cho mỗi thành viên" class="px-2 py-1 bg-emerald-100 hover:bg-emerald-600 hover:text-white text-emerald-800 text-[11px] font-extrabold rounded-lg transition">
+                  +1
+                </button>
+                <button onclick="updateGroupPoints(${gIdx}, 2)" title="Cộng 2 điểm cho mỗi thành viên" class="px-2 py-1 bg-blue-100 hover:bg-blue-600 hover:text-white text-blue-800 text-[11px] font-extrabold rounded-lg transition">
+                  +2
+                </button>
+                <button onclick="updateGroupPoints(${gIdx}, 5)" title="Cộng 5 điểm cho mỗi thành viên" class="px-2 py-1 bg-purple-100 hover:bg-purple-600 hover:text-white text-purple-800 text-[11px] font-extrabold rounded-lg transition">
+                  +5
+                </button>
+                <button onclick="updateGroupPoints(${gIdx}, -1)" title="Trừ 1 điểm cho mỗi thành viên" class="px-2 py-1 bg-rose-100 hover:bg-rose-600 hover:text-white text-rose-800 text-[11px] font-extrabold rounded-lg transition">
+                  -1
+                </button>
+              </div>
+            </div>
+
+            <div class="p-3.5 space-y-2 max-h-72 overflow-y-auto">
+              ${memberStudents.map(student => `
+                <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-100 transition">
+                  <div class="flex items-center gap-2">
+                    <img src="${getAvatarUrl(student.avatarSeed, student.gender)}" class="w-8 h-8 rounded-full border border-slate-200 bg-white" />
+                    <div>
+                      <h5 class="text-xs font-bold text-slate-800">${student.name}</h5>
+                      <span class="text-[10px] text-slate-400">${student.praises || 0} lượt khen</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-xs font-extrabold text-blue-600">
+                      ${activeSub === 'all' ? student.points : (student.subjectPoints?.[activeSub] || 0)}đ
+                    </span>
+                    <button onclick="updatePoints('${student.id}', 1)" class="w-6 h-6 rounded-md bg-emerald-50 hover:bg-emerald-600 hover:text-white text-emerald-700 text-[10px] font-bold transition flex items-center justify-center">
+                      +1
+                    </button>
+                    <button onclick="updatePoints('${student.id}', -1)" class="w-6 h-6 rounded-md bg-rose-50 hover:bg-rose-600 hover:text-white text-rose-700 text-[10px] font-bold transition flex items-center justify-center">
+                      -1
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function updateGroupPoints(groupIndex, delta) {
+      const groups = (appData.classGroups && appData.classGroups[appData.activeClassId]) || [];
+      const group = groups[groupIndex];
+      if (!group) return;
+
+      const activeSub = appData.activeSubject || 'all';
+      const subName = getSubjectName(activeSub);
+
+      group.members.forEach(studentId => {
+        const student = appData.students.find(s => s.id === studentId);
+        if (student) {
+          student.points = Math.max(0, student.points + delta);
+          if (activeSub !== 'all') {
+            student.subjectPoints = student.subjectPoints || {};
+            student.subjectPoints[activeSub] = Math.max(0, (student.subjectPoints[activeSub] || 0) + delta);
+          }
+          if (delta > 0) student.praises = (student.praises || 0) + 1;
+        }
+      });
+
+      if (delta > 0) {
+        sound.playWin();
+        confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+        showToast(`+${delta} điểm môn ${subName} cho toàn bộ thành viên ${group.name}! 🎉`, 'reward');
+      } else {
+        showToast(`${delta} điểm với ${group.name}`, 'info');
+      }
+
+      syncState();
+    }
+
     // ==================== BẢNG XẾP HẠNG (LEADERBOARD & PODIUM) ====================
     function renderLeaderboard() {
-      const students = [...getActiveStudents()].sort((a, b) => b.points - a.points);
+      const filterSubject = document.getElementById('leaderboardSubjectFilter')?.value || 'all';
+      const lblSubject = document.getElementById('lblRankSubjectName');
+      if (lblSubject) lblSubject.textContent = getSubjectName(filterSubject);
+
+      const allActive = getActiveStudents();
+      const students = [...allActive].sort((a, b) => {
+        const pA = getStudentSubjectPoints(a, filterSubject);
+        const pB = getStudentSubjectPoints(b, filterSubject);
+        return pB - pA;
+      });
+
       const podium = document.getElementById('podiumContainer');
       const tbody = document.getElementById('leaderboardTableBody');
       const totalPointsBadge = document.getElementById('totalClassPointsBadge');
 
-      const totalClassPoints = students.reduce((sum, s) => sum + s.points, 0);
+      const totalClassPoints = students.reduce((sum, s) => sum + getStudentSubjectPoints(s, filterSubject), 0);
       if (totalPointsBadge) totalPointsBadge.textContent = `${totalClassPoints} Điểm`;
 
       // Render Podium Top 3
@@ -1488,6 +2361,10 @@
           const top2 = students[1] || null;
           const top3 = students[2] || null;
 
+          const p1 = getStudentSubjectPoints(top1, filterSubject);
+          const p2 = top2 ? getStudentSubjectPoints(top2, filterSubject) : 0;
+          const p3 = top3 ? getStudentSubjectPoints(top3, filterSubject) : 0;
+
           // Cột Top 2 (Bên trái)
           const col2 = document.createElement('div');
           col2.className = 'flex flex-col items-center';
@@ -1497,7 +2374,7 @@
               <span class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-slate-300 text-slate-800 font-extrabold text-xs flex items-center justify-center border-2 border-white">2</span>
             </div>
             <h4 class="text-xs font-bold text-slate-800 text-center truncate max-w-[90px]">${top2.name}</h4>
-            <span class="text-xs font-extrabold text-blue-600">${top2.points}đ</span>
+            <span class="text-xs font-extrabold text-blue-600">${p2}đ</span>
             <div class="w-full h-20 bg-slate-200/80 rounded-t-xl mt-2 flex items-center justify-center text-slate-500 font-extrabold text-lg">
               🥈 Hạng 2
             </div>
@@ -1513,7 +2390,7 @@
               <span class="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-amber-400 text-amber-950 font-extrabold text-xs flex items-center justify-center border-2 border-white">1</span>
             </div>
             <h4 class="text-sm font-extrabold text-slate-900 text-center truncate max-w-[110px]">${top1.name}</h4>
-            <span class="text-sm font-extrabold text-amber-600">${top1.points}đ</span>
+            <span class="text-sm font-extrabold text-amber-600">${p1}đ</span>
             <div class="w-full h-28 bg-gradient-to-t from-amber-200 to-amber-100 rounded-t-xl mt-2 flex items-center justify-center text-amber-800 font-black text-xl shadow-inner">
               👑 Hạng 1
             </div>
@@ -1528,7 +2405,7 @@
               <span class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-amber-600 text-white font-extrabold text-xs flex items-center justify-center border-2 border-white">3</span>
             </div>
             <h4 class="text-xs font-bold text-slate-800 text-center truncate max-w-[90px]">${top3.name}</h4>
-            <span class="text-xs font-extrabold text-blue-600">${top3.points}đ</span>
+            <span class="text-xs font-extrabold text-blue-600">${p3}đ</span>
             <div class="w-full h-16 bg-amber-100/60 rounded-t-xl mt-2 flex items-center justify-center text-amber-700 font-extrabold text-base">
               🥉 Hạng 3
             </div>
@@ -1543,11 +2420,13 @@
       // Render Bảng Danh Sách Chi Tiết
       if (tbody) {
         tbody.innerHTML = '';
-        const maxPoints = students.length > 0 ? Math.max(1, students[0].points) : 1;
+        const topPts = students.length > 0 ? getStudentSubjectPoints(students[0], filterSubject) : 1;
+        const maxPoints = Math.max(1, topPts);
 
         students.forEach((student, index) => {
           const rank = index + 1;
-          const percentage = Math.round((student.points / maxPoints) * 100);
+          const currentPts = getStudentSubjectPoints(student, filterSubject);
+          const percentage = Math.round((currentPts / maxPoints) * 100);
           let rankBadge = `<span class="font-bold text-slate-500">${rank}</span>`;
           if (rank === 1) rankBadge = `<span class="w-6 h-6 rounded-full bg-amber-100 text-amber-700 font-black text-xs flex items-center justify-center">🥇</span>`;
           if (rank === 2) rankBadge = `<span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-black text-xs flex items-center justify-center">🥈</span>`;
@@ -1560,7 +2439,10 @@
             <td class="py-3 px-4">
               <div class="flex items-center gap-2.5">
                 <img src="${getAvatarUrl(student.avatarSeed, student.gender)}" class="w-8 h-8 rounded-full border border-slate-200" />
-                <span class="font-bold text-slate-800">${student.name}</span>
+                <div>
+                  <span class="font-bold text-slate-800 block">${student.name}</span>
+                  <span class="text-[10px] text-slate-400">Tổng điểm: ${student.points}đ</span>
+                </div>
               </div>
             </td>
             <td class="py-3 px-4 text-center font-semibold text-slate-500">${student.praises || 0}</td>
@@ -1569,11 +2451,16 @@
                 <div class="bg-blue-600 h-2 rounded-full" style="width: ${percentage}%"></div>
               </div>
             </td>
-            <td class="py-3 px-4 text-right font-extrabold text-blue-600">${student.points} đ</td>
+            <td class="py-3 px-4 text-right font-extrabold text-blue-600">${currentPts} đ</td>
             <td class="py-3 px-4 text-center">
-              <button onclick="updatePoints('${student.id}', 1)" class="px-2 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white rounded-lg text-xs font-bold transition">
-                +1đ
-              </button>
+              <div class="flex items-center justify-center gap-1">
+                <button onclick="updatePoints('${student.id}', 1)" title="Cộng điểm" class="px-2 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white rounded-lg text-xs font-bold transition">
+                  +1
+                </button>
+                <button onclick="openStudentSubjectModal('${student.id}')" title="Xem chi tiết các môn" class="p-1 text-slate-400 hover:text-blue-600 transition text-xs">
+                  <i class="fa-solid fa-list-check"></i>
+                </button>
+              </div>
             </td>
           `;
           tbody.appendChild(row);
@@ -1885,10 +2772,20 @@
     });
 
     // ==================== RENDER TẤT CẢ GIAO DIỆN ====================
+    function renderSubjectSelector() {
+      const select = document.getElementById('subjectSelector');
+      if (select && appData.activeSubject) {
+        select.value = appData.activeSubject;
+      }
+    }
+
     function renderAll() {
       renderClassSelector();
+      renderSubjectSelector();
       renderStudents();
       if (currentTab === 'wheel') drawWheel();
+      if (currentTab === 'duckrace') renderDuckRaceTrack();
+      if (currentTab === 'groups') renderGroups();
       if (currentTab === 'leaderboard') renderLeaderboard();
       if (currentTab === 'assessment') renderAssessmentLogs();
       if (currentTab === 'analytics') renderAnalytics();
