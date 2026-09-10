@@ -1,6 +1,6 @@
 {
   "name": "Quản Lý Lớp Học & Đánh Giá Học Sinh",
-  "description": "Ứng dụng web hỗ trợ giáo viên quản lý lớp học, đăng ký & đăng nhập bằng số điện thoại và mã OTP, tổ chức đua vịt vui nhộn, chia nhóm tự động, vòng quay may mắn, cộng trừ điểm thưởng theo từng môn học.",
+  "description": "Ứng dụng web hỗ trợ giáo viên quản lý lớp học, máy chủ xác thực tài khoản giáo viên qua Email hoặc Số điện thoại với mã OTP, tổ chức đua vịt vui nhộn, chia nhóm tự động, vòng quay may mắn, cộng trừ điểm thưởng theo từng môn học.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

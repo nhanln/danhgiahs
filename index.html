@@ -62,21 +62,22 @@
 
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
   <!-- ==================== SIMULATED REAL-TIME SMS OTP NOTIFICATION ==================== -->
+  <!-- ==================== BANNER THÔNG BÁO TIN NHẮN SMS / EMAIL OTP MÔ PHỎNG ==================== -->
   <div id="smsNotificationBanner" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-md bg-slate-900/95 backdrop-blur-md text-white p-4 rounded-2xl shadow-2xl border border-slate-700/60 hidden transition-all duration-300 transform scale-100">
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-start gap-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shrink-0 mt-0.5 shadow-xs">
+        <div id="smsBannerIcon" class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shrink-0 mt-0.5 shadow-xs">
           <i class="fa-solid fa-comment-sms"></i>
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="text-[11px] font-black tracking-wider uppercase text-emerald-400">TIN NHẮN SMS • CLASSHERO</span>
+            <span id="smsBannerHeaderTitle" class="text-[11px] font-black tracking-wider uppercase text-emerald-400">TIN NHẮN SMS • CLASSHERO</span>
             <span class="text-[10px] text-slate-400">Vừa xong</span>
           </div>
           <p class="text-xs text-slate-200 mt-1 leading-relaxed">
-            Mã xác thực OTP gửi về số <strong id="smsTargetPhoneDisplay" class="text-white">---</strong> là: <span class="px-2 py-0.5 rounded-lg bg-amber-400/20 text-amber-300 font-mono text-base font-black tracking-widest border border-amber-400/40" id="smsOtpCodeDisplay">------</span>
+            Mã OTP gửi đến <strong id="smsTargetPhoneDisplay" class="text-white">---</strong> là: <span class="px-2 py-0.5 rounded-lg bg-amber-400/20 text-amber-300 font-mono text-base font-black tracking-widest border border-amber-400/40" id="smsOtpCodeDisplay">------</span>
           </p>
-          <p class="text-[11px] text-slate-400 mt-0.5">Mã có hiệu lực trong 3 phút. Vui lòng không chia sẻ mã này.</p>
+          <p class="text-[11px] text-slate-400 mt-0.5">Mã có hiệu lực trong 5 phút. Vui lòng không chia sẻ mã này.</p>
         </div>
       </div>
       <button onclick="dismissSmsBanner()" class="text-slate-400 hover:text-white text-xs p-1" title="Đóng thông báo">
@@ -84,7 +85,7 @@
       </button>
     </div>
     <div class="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between">
-      <span class="text-[10px] text-slate-400"><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i>Bảo mật ClassHero OTP</span>
+      <span class="text-[10px] text-slate-400"><i class="fa-solid fa-server text-blue-400 mr-1"></i>Máy chủ ClassHero Auth API</span>
       <button onclick="autoFillOtpCode()" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-xs">
         <i class="fa-solid fa-paste"></i>
         <span>Tự Động Điền Mã</span>
@@ -110,7 +111,7 @@
             </div>
             <div>
               <h2 class="font-black text-2xl tracking-tight">ClassHero</h2>
-              <p class="text-xs text-blue-200 font-medium">Trợ Lý Số Quản Lý Lớp Học</p>
+              <p class="text-xs text-blue-200 font-medium">Server Quản Lý & Xác Thực Giáo Viên</p>
             </div>
           </div>
 
@@ -118,25 +119,25 @@
             Dành Riêng Cho Quý Thầy Cô Việt Nam 🇻🇳
           </h3>
           <p class="text-xs sm:text-sm text-blue-100 mb-6 leading-relaxed">
-            Hệ thống tổ chức lớp học, thi đua khen thưởng theo từng môn học và trò chơi tương tác sôi nổi nhất.
+            Hệ thống máy chủ hỗ trợ đăng ký tài khoản nhanh chóng qua <strong>Email hoặc Số điện thoại</strong> với bảo mật mã OTP.
           </p>
 
           <div class="space-y-3 text-xs sm:text-sm text-blue-50">
             <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-envelope-circle-check"></i></span>
+              <span>Đăng ký qua Số điện thoại hoặc Email 📧</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-shield-check"></i></span>
+              <span>Mã OTP bảo mật 6 chữ số gửi về tức thì 🔒</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-duck"></i></span>
               <span>Đua vịt học tập 🦆 & Vòng quay may mắn 🎡</span>
             </div>
             <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
+              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-award"></i></span>
               <span>Cộng/Trừ điểm chi tiết theo từng môn học 📐</span>
-            </div>
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
-              <span>Chia nhóm tự động & chấm điểm đội nhóm 👥</span>
-            </div>
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></span>
-              <span>Bảo mật qua số điện thoại & mã OTP gửi về 🔒</span>
             </div>
           </div>
         </div>
@@ -146,7 +147,7 @@
             <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherTrang" class="w-9 h-9 rounded-full bg-white/20 border border-white/40" />
             <div>
               <p class="text-xs font-bold leading-tight">Cô Hoàng Thu Trang</p>
-              <p class="text-[11px] text-blue-200">Giáo viên Trường Tiểu học Ánh Sáng</p>
+              <p class="text-[11px] text-blue-200">thutrang.anhsang@edu.vn • 0912 345 678</p>
             </div>
           </div>
         </div>
@@ -161,7 +162,7 @@
               <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Đăng Nhập
             </button>
             <button onclick="switchAuthTab('register')" id="authTabRegisterBtn" class="flex-1 py-2.5 text-xs sm:text-sm font-bold text-slate-500 hover:text-slate-800 rounded-xl transition">
-              <i class="fa-solid fa-user-plus mr-1.5"></i>Đăng Ký Mới (Mã OTP)
+              <i class="fa-solid fa-user-plus mr-1.5"></i>Đăng Ký Mới (Email / SĐT)
             </button>
           </div>
 
@@ -169,7 +170,7 @@
           <div id="authLoginForm" class="space-y-4">
             <div class="mb-4">
               <h3 class="text-lg font-black text-slate-900">Chào mừng Thầy/Cô trở lại! 👋</h3>
-              <p class="text-xs text-slate-500 mt-0.5">Vui lòng đăng nhập số điện thoại để vào sổ lớp học.</p>
+              <p class="text-xs text-slate-500 mt-0.5">Đăng nhập bằng Số điện thoại hoặc Địa chỉ Email đã đăng ký.</p>
             </div>
 
             <!-- Login Mode Switcher (Password vs OTP) -->
@@ -180,17 +181,17 @@
                   Mật khẩu
                 </button>
                 <button type="button" onclick="setLoginMode('otp')" id="btnModeOtp" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 transition">
-                  Mã OTP SMS
+                  Mã OTP
                 </button>
               </div>
             </div>
 
             <form onsubmit="handleLoginSubmit(event)" class="space-y-3.5">
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại di động *</label>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại hoặc Email *</label>
                 <div class="relative">
-                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-xs font-semibold">+84</span>
-                  <input type="tel" id="loginPhone" required placeholder="09xx xxx xxx hoặc 03x, 05x, 07x..." class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                  <span class="absolute left-3.5 top-2.5 text-slate-400 text-xs"><i class="fa-solid fa-user-check"></i></span>
+                  <input type="text" id="loginIdentifier" required placeholder="0988123456 hoặc giaovien@edu.vn..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
                 </div>
               </div>
 
@@ -211,7 +212,7 @@
               <!-- OTP field (when mode === otp) -->
               <div id="loginOtpField" class="hidden space-y-2">
                 <div class="flex items-center justify-between">
-                  <label class="block text-xs font-bold text-slate-700">Mã xác thực OTP gửi về SMS *</label>
+                  <label class="block text-xs font-bold text-slate-700">Mã xác thực OTP gửi về SMS/Email *</label>
                   <button type="button" onclick="sendLoginOtp()" id="btnSendLoginOtp" class="text-[11px] text-blue-600 font-extrabold hover:underline">
                     <i class="fa-solid fa-paper-plane mr-1"></i>Gửi Mã OTP
                   </button>
@@ -234,31 +235,46 @@
 
             <!-- Quick Demo Login -->
             <div class="pt-4 border-t border-slate-100">
-              <span class="block text-[11px] font-bold text-slate-400 mb-2">⚡ Thử nhanh bằng tài khoản giáo viên mẫu:</span>
+              <span class="block text-[11px] font-bold text-slate-400 mb-2">⚡ Thử nhanh bằng tài khoản giáo viên có sẵn trên server:</span>
               <div class="grid grid-cols-2 gap-2">
                 <button onclick="quickDemoLogin('teacher-1')" class="p-2 bg-slate-50 hover:bg-blue-50 hover:border-blue-300 border border-slate-200 rounded-xl text-left transition flex items-center gap-2 group">
                   <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherAn" class="w-7 h-7 rounded-full bg-blue-100 shrink-0" />
                   <div class="truncate">
                     <p class="text-xs font-bold text-slate-800 truncate group-hover:text-blue-700">Thầy Văn An</p>
-                    <p class="text-[10px] text-slate-500">Môn Toán (Lớp 4A)</p>
+                    <p class="text-[10px] text-slate-500 truncate">thayan.chuvanan@gmail.com</p>
                   </div>
                 </button>
                 <button onclick="quickDemoLogin('teacher-2')" class="p-2 bg-slate-50 hover:bg-rose-50 hover:border-rose-300 border border-slate-200 rounded-xl text-left transition flex items-center gap-2 group">
                   <img src="https://api.dicebear.com/7.x/bottts/svg?seed=TeacherTrang" class="w-7 h-7 rounded-full bg-rose-100 shrink-0" />
                   <div class="truncate">
                     <p class="text-xs font-bold text-slate-800 truncate group-hover:text-rose-700">Cô Thu Trang</p>
-                    <p class="text-[10px] text-slate-500">Tiếng Việt (Lớp 7B)</p>
+                    <p class="text-[10px] text-slate-500 truncate">thutrang.anhsang@edu.vn</p>
                   </div>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- TAB 2: FORM ĐĂNG KÝ VỚI SỐ ĐIỆN THOẠI & MÃ GỬI VỀ (SMS OTP) -->
+          <!-- TAB 2: FORM ĐĂNG KÝ VỚI SỐ ĐIỆN THOẠI HOẶC EMAIL & MÃ GỬI VỀ -->
           <div id="authRegisterForm" class="hidden space-y-3.5">
             <div>
               <h3 class="text-lg font-black text-slate-900">Đăng Ký Giáo Viên Mới 📝</h3>
-              <p class="text-xs text-slate-500 mt-0.5">Nhập số điện thoại để nhận mã xác thực OTP gửi về SMS.</p>
+              <p class="text-xs text-slate-500 mt-0.5">Xác thực tài khoản an toàn thông qua Email hoặc Số điện thoại.</p>
+            </div>
+
+            <!-- CHỌN PHƯƠNG THỨC XÁC THỰC OTP: SỐ ĐIỆN THOẠI HOẶC EMAIL -->
+            <div class="flex items-center gap-2 p-1.5 bg-blue-50/70 border border-blue-100 rounded-2xl">
+              <span class="text-[11px] font-bold text-blue-900 pl-2">Nhận mã OTP qua:</span>
+              <div class="flex-1 flex gap-1.5">
+                <button type="button" onclick="setRegOtpChannel('phone')" id="btnRegChannelPhone" class="flex-1 py-1.5 px-2.5 rounded-xl text-xs font-extrabold transition bg-white text-blue-700 shadow-xs border border-blue-200 flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-mobile-screen"></i>
+                  <span>Số Điện Thoại</span>
+                </button>
+                <button type="button" onclick="setRegOtpChannel('email')" id="btnRegChannelEmail" class="flex-1 py-1.5 px-2.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-envelope"></i>
+                  <span>Địa Chỉ Email</span>
+                </button>
+              </div>
             </div>
 
             <form onsubmit="handleRegisterSubmit(event)" class="space-y-3">
@@ -297,15 +313,15 @@
                 </div>
               </div>
 
-              <!-- SỐ ĐIỆN THOẠI & NÚT GỬI MÃ OTP -->
-              <div class="p-3 bg-blue-50/70 border border-blue-100 rounded-2xl space-y-2">
+              <!-- KHỐI NHẬP SỐ ĐIỆN THOẠI HOẶC EMAIL NHẬN MÃ OTP -->
+              <div id="regPhoneBlock" class="p-3 bg-blue-50/70 border border-blue-100 rounded-2xl space-y-2">
                 <label class="block text-xs font-extrabold text-blue-900">
                   <i class="fa-solid fa-mobile-screen mr-1 text-blue-600"></i>Số điện thoại nhận mã xác thực *
                 </label>
                 <div class="flex gap-2">
                   <div class="relative flex-1">
                     <span class="absolute left-3 top-2 text-slate-400 text-xs font-semibold">+84</span>
-                    <input type="tel" id="regPhone" required placeholder="0987654321..." class="w-full pl-11 pr-3 py-2 bg-white border border-blue-200 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
+                    <input type="tel" id="regPhone" placeholder="0987654321..." class="w-full pl-11 pr-3 py-2 bg-white border border-blue-200 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-hidden" />
                   </div>
                   <button type="button" onclick="sendRegistrationOtp()" id="btnSendRegOtp" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black transition shrink-0 shadow-xs flex items-center gap-1.5">
                     <i class="fa-solid fa-paper-plane"></i>
@@ -314,14 +330,46 @@
                 </div>
                 <p id="regOtpHelperText" class="text-[11px] text-blue-700 flex items-center gap-1">
                   <i class="fa-solid fa-circle-info"></i>
-                  <span>Nhấn "Gửi Mã OTP" để nhận mã 6 chữ số gửi về điện thoại.</span>
+                  <span>Nhấn "Gửi Mã OTP" để nhận mã 6 chữ số gửi về số điện thoại.</span>
                 </p>
+              </div>
+
+              <div id="regEmailBlock" class="hidden p-3 bg-indigo-50/70 border border-indigo-100 rounded-2xl space-y-2">
+                <label class="block text-xs font-extrabold text-indigo-900">
+                  <i class="fa-solid fa-envelope mr-1 text-indigo-600"></i>Địa chỉ Email nhận mã xác thực *
+                </label>
+                <div class="flex gap-2">
+                  <div class="relative flex-1">
+                    <span class="absolute left-3 top-2 text-slate-400 text-xs"><i class="fa-solid fa-at"></i></span>
+                    <input type="email" id="regEmail" placeholder="giaovien@truong.edu.vn hoặc @gmail.com..." class="w-full pl-9 pr-3 py-2 bg-white border border-indigo-200 rounded-xl text-xs font-bold text-slate-900 focus:ring-2 focus:ring-indigo-500 focus:outline-hidden" />
+                  </div>
+                  <button type="button" onclick="sendRegistrationOtp()" id="btnSendRegOtpEmail" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black transition shrink-0 shadow-xs flex items-center gap-1.5">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Gửi Mã OTP</span>
+                  </button>
+                </div>
+                <p id="regEmailHelperText" class="text-[11px] text-indigo-700 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-info"></i>
+                  <span>Mã 6 chữ số sẽ được gửi về hộp thư điện tử của Thầy/Cô.</span>
+                </p>
+              </div>
+
+              <!-- PHƯƠNG THỨC LIÊN LẠC THỨ HAI (KHÔNG BẮT BUỘC) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div id="regOptionalPhone" class="hidden">
+                  <label class="block text-[11px] font-bold text-slate-500 mb-1">Số điện thoại (tùy chọn)</label>
+                  <input type="tel" id="regSecondaryPhone" placeholder="09xx xxx xxx..." class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-hidden" />
+                </div>
+                <div id="regOptionalEmail">
+                  <label class="block text-[11px] font-bold text-slate-500 mb-1">Địa chỉ Email liên hệ (tùy chọn)</label>
+                  <input type="email" id="regSecondaryEmail" placeholder="giaovien@gmail.com..." class="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:outline-hidden" />
+                </div>
               </div>
 
               <!-- Ô NHẬP MÃ XÁC THỰC GỬI VỀ -->
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1">
-                  Nhập mã OTP gửi về số điện thoại *
+                  Nhập mã xác thực OTP 6 số (gửi về SĐT hoặc Email) *
                 </label>
                 <div class="relative">
                   <input type="text" id="regOtp" maxlength="6" required placeholder="• • • • • •" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base font-mono font-black tracking-widest text-center text-slate-900 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden" />
@@ -1301,9 +1349,15 @@
             <option value="ethics">🌟 Chủ Nhiệm / Kỹ Năng</option>
           </select>
         </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại đăng ký (Không thể đổi)</label>
-          <input type="text" id="editProfilePhone" disabled class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-500 cursor-not-allowed" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại</label>
+            <input type="text" id="editProfilePhone" placeholder="09xx..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Địa chỉ Email</label>
+            <input type="email" id="editProfileEmail" placeholder="email@..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:ring-2 focus:ring-blue-500" />
+          </div>
         </div>
         <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
           <button type="button" onclick="closeModal('editTeacherProfileModal')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
@@ -3182,16 +3236,18 @@
       });
     });
 
-    // ==================== HỆ THỐNG QUẢN LÝ TÀI KHOẢN GIÁO VIÊN & XÁC THỰC OTP ====================
+    // ==================== HỆ THỐNG QUẢN LÝ TÀI KHOẢN GIÁO VIÊN & XÁC THỰC SERVER (SĐT / EMAIL) ====================
     const TEACHERS_STORAGE_KEY = 'classhero_teachers_v1';
     const CURRENT_TEACHER_KEY = 'classhero_current_teacher_id';
+    const AUTH_TOKEN_KEY = 'classhero_auth_token';
 
-    // Danh sách giáo viên mẫu ban đầu
+    // Danh sách giáo viên mẫu ban đầu (dùng khi offline hoặc fallback)
     const DEFAULT_TEACHERS = [
       {
         id: 'teacher-1',
         name: 'Thầy Nguyễn Văn An',
         phone: '0988123456',
+        email: 'thayan.chuvanan@gmail.com',
         password: 'password123',
         school: 'Trường Tiểu học Chu Văn An',
         subject: 'math',
@@ -3203,6 +3259,7 @@
         id: 'teacher-2',
         name: 'Cô Hoàng Thu Trang',
         phone: '0912345678',
+        email: 'thutrang.anhsang@edu.vn',
         password: 'password123',
         school: 'Trường Tiểu học Ánh Sáng',
         subject: 'vietnamese',
@@ -3214,10 +3271,12 @@
 
     let currentTeacher = null;
     let activeLoginMode = 'password'; // 'password' | 'otp'
+    let activeRegChannel = 'phone';   // 'phone' | 'email'
 
     // Phiên gửi mã OTP hiện tại
     let activeOtpSession = {
-      phone: null,
+      target: null,
+      type: null,
       code: null,
       expiresAt: 0,
       countdownSeconds: 0,
@@ -3262,6 +3321,11 @@
       return /^(03|05|07|08|09)\d{8}$/.test(normalized);
     }
 
+    function isValidEmail(email) {
+      if (!email) return false;
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    }
+
     function switchAuthTab(tab) {
       const loginForm = document.getElementById('authLoginForm');
       const registerForm = document.getElementById('authRegisterForm');
@@ -3301,6 +3365,32 @@
       }
     }
 
+    function setRegOtpChannel(channel) {
+      activeRegChannel = channel;
+      const btnPhone = document.getElementById('btnRegChannelPhone');
+      const btnEmail = document.getElementById('btnRegChannelEmail');
+      const phoneBlock = document.getElementById('regPhoneBlock');
+      const emailBlock = document.getElementById('regEmailBlock');
+      const optPhone = document.getElementById('regOptionalPhone');
+      const optEmail = document.getElementById('regOptionalEmail');
+
+      if (channel === 'phone') {
+        btnPhone.className = "flex-1 py-1.5 px-2.5 rounded-xl text-xs font-extrabold transition bg-white text-blue-700 shadow-xs border border-blue-200 flex items-center justify-center gap-1.5";
+        btnEmail.className = "flex-1 py-1.5 px-2.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5";
+        phoneBlock.classList.remove('hidden');
+        emailBlock.classList.add('hidden');
+        optPhone.classList.add('hidden');
+        optEmail.classList.remove('hidden');
+      } else {
+        btnEmail.className = "flex-1 py-1.5 px-2.5 rounded-xl text-xs font-extrabold transition bg-white text-indigo-700 shadow-xs border border-indigo-200 flex items-center justify-center gap-1.5";
+        btnPhone.className = "flex-1 py-1.5 px-2.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5";
+        emailBlock.classList.remove('hidden');
+        phoneBlock.classList.add('hidden');
+        optEmail.classList.add('hidden');
+        optPhone.classList.remove('hidden');
+      }
+    }
+
     function togglePasswordVisibility(inputId, iconId) {
       const input = document.getElementById(inputId);
       const icon = document.getElementById(iconId);
@@ -3314,28 +3404,49 @@
       }
     }
 
-    // ==================== BẢN TIN NHẮN SMS OTP MÔ PHỎNG ====================
+    // ==================== BẢN TIN NHẮN SMS / EMAIL OTP MÔ PHỎNG ====================
     let smsBannerTimeout = null;
 
-    function triggerSmsNotification(phone, code) {
+    function triggerOtpNotification(target, type, code) {
       const banner = document.getElementById('smsNotificationBanner');
-      const phoneDisplay = document.getElementById('smsTargetPhoneDisplay');
+      const targetDisplay = document.getElementById('smsTargetPhoneDisplay');
       const codeDisplay = document.getElementById('smsOtpCodeDisplay');
-      if (!banner || !phoneDisplay || !codeDisplay) return;
+      const bannerIcon = document.getElementById('smsBannerIcon');
+      const headerTitle = document.getElementById('smsBannerHeaderTitle');
+      if (!banner || !targetDisplay || !codeDisplay) return;
 
-      phoneDisplay.textContent = phone;
+      targetDisplay.textContent = target;
       codeDisplay.textContent = code;
+
+      if (type === 'email') {
+        if (bannerIcon) {
+          bannerIcon.className = "w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-lg shrink-0 mt-0.5 shadow-xs";
+          bannerIcon.innerHTML = `<i class="fa-solid fa-envelope-open-text"></i>`;
+        }
+        if (headerTitle) {
+          headerTitle.className = "text-[11px] font-black tracking-wider uppercase text-indigo-400";
+          headerTitle.textContent = "HỘP THƯ EMAIL • CLASSHERO";
+        }
+      } else {
+        if (bannerIcon) {
+          bannerIcon.className = "w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-lg shrink-0 mt-0.5 shadow-xs";
+          bannerIcon.innerHTML = `<i class="fa-solid fa-comment-sms"></i>`;
+        }
+        if (headerTitle) {
+          headerTitle.className = "text-[11px] font-black tracking-wider uppercase text-emerald-400";
+          headerTitle.textContent = "TIN NHẮN SMS • CLASSHERO";
+        }
+      }
 
       banner.classList.remove('hidden');
       banner.classList.add('flex');
 
-      // Âm thanh báo tin nhắn SMS tới
       sound.playSmsChime();
 
       if (smsBannerTimeout) clearTimeout(smsBannerTimeout);
       smsBannerTimeout = setTimeout(() => {
         dismissSmsBanner();
-      }, 30000);
+      }, 45000);
     }
 
     function dismissSmsBanner() {
@@ -3364,143 +3475,241 @@
       dismissSmsBanner();
     }
 
-    // ==================== GỬI MÃ OTP ĐĂNG KÝ VÀ ĐĂNG NHẬP ====================
-    function sendRegistrationOtp() {
-      const phoneInput = document.getElementById('regPhone');
-      const rawPhone = phoneInput.value.trim();
-      const normalizedPhone = normalizePhone(rawPhone);
+    // ==================== GỬI MÃ OTP ĐĂNG KÝ VÀ ĐĂNG NHẬP VỚI SERVER ====================
+    async function sendRegistrationOtp() {
+      let target = '';
+      let type = activeRegChannel;
+      let btn = activeRegChannel === 'phone' ? document.getElementById('btnSendRegOtp') : document.getElementById('btnSendRegOtpEmail');
 
-      if (!isValidVietnamesePhone(normalizedPhone)) {
-        alert('Vui lòng nhập số điện thoại Việt Nam hợp lệ (10 số, đầu số 03, 05, 07, 08, 09).');
-        phoneInput.focus();
-        return;
-      }
-
-      const teachers = loadTeachers();
-      const existing = teachers.find(t => t.phone === normalizedPhone);
-      if (existing) {
-        alert(`Số điện thoại ${normalizedPhone} đã được đăng ký cho "${existing.name}". Vui lòng chuyển sang tab "Đăng Nhập".`);
-        switchAuthTab('login');
-        document.getElementById('loginPhone').value = normalizedPhone;
-        return;
-      }
-
-      // Tạo mã OTP ngẫu nhiên 6 chữ số
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      activeOtpSession = {
-        phone: normalizedPhone,
-        code: code,
-        expiresAt: Date.now() + 3 * 60 * 1000,
-        countdownSeconds: 60,
-        timerId: null
-      };
-
-      // Đếm ngược 60s trên nút gửi
-      const btn = document.getElementById('btnSendRegOtp');
-      btn.disabled = true;
-      btn.classList.add('opacity-60', 'cursor-not-allowed');
-
-      if (activeOtpSession.timerId) clearInterval(activeOtpSession.timerId);
-      activeOtpSession.timerId = setInterval(() => {
-        activeOtpSession.countdownSeconds--;
-        if (activeOtpSession.countdownSeconds <= 0) {
-          clearInterval(activeOtpSession.timerId);
-          btn.disabled = false;
-          btn.classList.remove('opacity-60', 'cursor-not-allowed');
-          btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi Lại Mã`;
-        } else {
-          btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Gửi lại (${activeOtpSession.countdownSeconds}s)`;
+      if (type === 'phone') {
+        const phoneInput = document.getElementById('regPhone');
+        const rawPhone = phoneInput.value.trim();
+        target = normalizePhone(rawPhone);
+        if (!isValidVietnamesePhone(target)) {
+          alert('Vui lòng nhập số điện thoại Việt Nam hợp lệ (10 số, đầu số 03, 05, 07, 08, 09).');
+          phoneInput.focus();
+          return;
         }
-      }, 1000);
-
-      const helper = document.getElementById('regOtpHelperText');
-      if (helper) {
-        helper.innerHTML = `<i class="fa-solid fa-check-circle text-emerald-600 mr-1"></i><span class="text-emerald-700 font-semibold">Đã gửi mã xác thực tới ${normalizedPhone}! Kiểm tra tin nhắn phía trên.</span>`;
+      } else {
+        const emailInput = document.getElementById('regEmail');
+        target = emailInput.value.trim().toLowerCase();
+        if (!isValidEmail(target)) {
+          alert('Vui lòng nhập địa chỉ email hợp lệ (VD: giaovien@edu.vn hoặc thay.an@gmail.com).');
+          emailInput.focus();
+          return;
+        }
       }
 
-      triggerSmsNotification(normalizedPhone, code);
-      showToast(`Mã OTP đã được gửi về số ${normalizedPhone}!`, 'info');
+      // Vô hiệu hóa nút và hiện trạng thái gửi
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i>Đang gửi...`;
+      }
+
+      try {
+        const resp = await fetch('/api/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target: target, type: type, action: 'register' })
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok || !data.success) {
+          alert(data.message || 'Không thể gửi mã OTP. Vui lòng thử lại.');
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi Mã OTP`;
+          }
+          return;
+        }
+
+        activeOtpSession = {
+          target: target,
+          type: type,
+          code: data.otpCode,
+          expiresAt: Date.now() + 5 * 60 * 1000,
+          countdownSeconds: 60,
+          timerId: null
+        };
+
+        // Đếm ngược 60 giây
+        if (activeOtpSession.timerId) clearInterval(activeOtpSession.timerId);
+        activeOtpSession.timerId = setInterval(() => {
+          activeOtpSession.countdownSeconds--;
+          if (activeOtpSession.countdownSeconds <= 0) {
+            clearInterval(activeOtpSession.timerId);
+            if (btn) {
+              btn.disabled = false;
+              btn.classList.remove('opacity-60', 'cursor-not-allowed');
+              btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi Lại Mã`;
+            }
+          } else {
+            if (btn) {
+              btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Gửi lại (${activeOtpSession.countdownSeconds}s)`;
+            }
+          }
+        }, 1000);
+
+        triggerOtpNotification(target, type, data.otpCode);
+        showToast(`Mã OTP đã được gửi về ${type === 'phone' ? 'số điện thoại' : 'hộp thư email'}!`, 'info');
+      } catch (err) {
+        console.warn('Gọi API thất bại, chuyển sang cơ chế tạo OTP cục bộ:', err);
+        // Fallback tạo OTP cục bộ khi không có backend kết nối
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        activeOtpSession = {
+          target: target,
+          type: type,
+          code: code,
+          expiresAt: Date.now() + 5 * 60 * 1000,
+          countdownSeconds: 60,
+          timerId: null
+        };
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi Mã OTP`;
+        }
+        triggerOtpNotification(target, type, code);
+        showToast(`Đã tạo mã xác thực OTP: ${code}`, 'info');
+      }
     }
 
-    function sendLoginOtp() {
-      const phoneInput = document.getElementById('loginPhone');
-      const rawPhone = phoneInput.value.trim();
-      const normalizedPhone = normalizePhone(rawPhone);
-
-      if (!isValidVietnamesePhone(normalizedPhone)) {
-        alert('Vui lòng nhập số điện thoại Việt Nam hợp lệ (10 số).');
-        phoneInput.focus();
+    async function sendLoginOtp() {
+      const input = document.getElementById('loginIdentifier');
+      const raw = input.value.trim();
+      if (!raw) {
+        alert('Vui lòng nhập số điện thoại hoặc địa chỉ email để nhận mã OTP.');
+        input.focus();
         return;
       }
 
-      const teachers = loadTeachers();
-      const teacher = teachers.find(t => t.phone === normalizedPhone);
-      if (!teacher) {
-        alert(`Số điện thoại ${normalizedPhone} chưa có tài khoản. Thầy/Cô vui lòng chuyển sang tab "Đăng Ký Mới" để tạo tài khoản.`);
-        switchAuthTab('register');
-        document.getElementById('regPhone').value = normalizedPhone;
-        return;
+      let type = 'phone';
+      let target = raw;
+      if (raw.includes('@')) {
+        type = 'email';
+        target = raw.toLowerCase();
+        if (!isValidEmail(target)) {
+          alert('Địa chỉ email không hợp lệ.');
+          return;
+        }
+      } else {
+        type = 'phone';
+        target = normalizePhone(raw);
+        if (!isValidVietnamesePhone(target)) {
+          alert('Số điện thoại không hợp lệ (cần 10 số).');
+          return;
+        }
       }
-
-      const code = Math.floor(100000 + Math.random() * 900000).toString();
-      activeOtpSession = {
-        phone: normalizedPhone,
-        code: code,
-        expiresAt: Date.now() + 3 * 60 * 1000,
-        countdownSeconds: 60,
-        timerId: null
-      };
 
       const btn = document.getElementById('btnSendLoginOtp');
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Đã gửi (${activeOtpSession.countdownSeconds}s)`;
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i>Đang gửi...`;
+      }
 
-      if (activeOtpSession.timerId) clearInterval(activeOtpSession.timerId);
-      activeOtpSession.timerId = setInterval(() => {
-        activeOtpSession.countdownSeconds--;
-        if (activeOtpSession.countdownSeconds <= 0) {
-          clearInterval(activeOtpSession.timerId);
+      try {
+        const resp = await fetch('/api/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target: target, action: 'login' })
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok || !data.success) {
+          alert(data.message || 'Không thể gửi mã OTP đăng nhập.');
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi Mã OTP`;
+          }
+          return;
+        }
+
+        activeOtpSession = {
+          target: target,
+          type: data.type || type,
+          code: data.otpCode,
+          expiresAt: Date.now() + 5 * 60 * 1000,
+          countdownSeconds: 60,
+          timerId: null
+        };
+
+        if (btn) {
+          btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Đã gửi (${activeOtpSession.countdownSeconds}s)`;
+        }
+
+        if (activeOtpSession.timerId) clearInterval(activeOtpSession.timerId);
+        activeOtpSession.timerId = setInterval(() => {
+          activeOtpSession.countdownSeconds--;
+          if (activeOtpSession.countdownSeconds <= 0) {
+            clearInterval(activeOtpSession.timerId);
+            if (btn) {
+              btn.disabled = false;
+              btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi lại OTP`;
+            }
+          } else {
+            if (btn) {
+              btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Gửi lại (${activeOtpSession.countdownSeconds}s)`;
+            }
+          }
+        }, 1000);
+
+        triggerOtpNotification(target, data.type || type, data.otpCode);
+        showToast(`Mã OTP đã gửi về ${target}!`, 'info');
+      } catch (err) {
+        console.warn('Lỗi gọi API send-otp đăng nhập:', err);
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        activeOtpSession = {
+          target: target,
+          type: type,
+          code: code,
+          expiresAt: Date.now() + 5 * 60 * 1000,
+          countdownSeconds: 60,
+          timerId: null
+        };
+        if (btn) {
           btn.disabled = false;
           btn.innerHTML = `<i class="fa-solid fa-paper-plane mr-1"></i>Gửi lại OTP`;
-        } else {
-          btn.innerHTML = `<i class="fa-solid fa-clock mr-1"></i>Gửi lại (${activeOtpSession.countdownSeconds}s)`;
         }
-      }, 1000);
-
-      triggerSmsNotification(normalizedPhone, code);
-      showToast(`Mã OTP đã gửi về ${normalizedPhone}!`, 'info');
+        triggerOtpNotification(target, type, code);
+      }
     }
 
-    // ==================== XỬ LÝ SUBMIT ĐĂNG KÝ ====================
-    function handleRegisterSubmit(event) {
+    // ==================== XỬ LÝ SUBMIT ĐĂNG KÝ VỚI SERVER ====================
+    async function handleRegisterSubmit(event) {
       event.preventDefault();
+      const submitBtn = document.getElementById('btnSubmitRegister');
       const name = document.getElementById('regName').value.trim();
       const gender = document.getElementById('regGender').value;
       const school = document.getElementById('regSchool').value.trim();
       const subject = document.getElementById('regSubject').value;
-      const rawPhone = document.getElementById('regPhone').value.trim();
-      const normalizedPhone = normalizePhone(rawPhone);
       const otpEntered = document.getElementById('regOtp').value.trim();
       const password = document.getElementById('regPassword').value;
       const confirmPassword = document.getElementById('regConfirmPassword').value;
 
-      if (!isValidVietnamesePhone(normalizedPhone)) {
-        alert('Số điện thoại không hợp lệ.');
-        return;
+      let phone = '';
+      let email = '';
+
+      if (activeRegChannel === 'phone') {
+        const rawPhone = document.getElementById('regPhone').value.trim();
+        phone = normalizePhone(rawPhone);
+        email = document.getElementById('regSecondaryEmail').value.trim();
+        if (!isValidVietnamesePhone(phone)) {
+          alert('Số điện thoại nhận mã không hợp lệ.');
+          return;
+        }
+      } else {
+        email = document.getElementById('regEmail').value.trim().toLowerCase();
+        const rawSecPhone = document.getElementById('regSecondaryPhone').value.trim();
+        phone = rawSecPhone ? normalizePhone(rawSecPhone) : '';
+        if (!isValidEmail(email)) {
+          alert('Địa chỉ email nhận mã không hợp lệ.');
+          return;
+        }
       }
 
-      if (!activeOtpSession.code || activeOtpSession.phone !== normalizedPhone) {
-        alert('Vui lòng nhấn nút "Gửi Mã OTP" để nhận mã xác thực qua tin nhắn số điện thoại trước.');
-        return;
-      }
-
-      if (Date.now() > activeOtpSession.expiresAt) {
-        alert('Mã OTP đã hết hiệu lực (sau 3 phút). Vui lòng nhấn gửi lại mã mới.');
-        return;
-      }
-
-      if (otpEntered !== activeOtpSession.code) {
-        alert('Mã OTP xác thực không chính xác! Vui lòng kiểm tra lại tin nhắn SMS phía trên màn hình.');
+      if (!otpEntered || otpEntered.length !== 6) {
+        alert('Vui lòng nhập đủ 6 chữ số mã OTP xác thực.');
         document.getElementById('regOtp').focus();
         return;
       }
@@ -3515,121 +3724,235 @@
         return;
       }
 
-      // Tạo tài khoản giáo viên mới
-      const newTeacher = {
-        id: 'teacher-' + Date.now(),
-        name: name,
-        phone: normalizedPhone,
-        password: password,
-        school: school,
-        subject: subject,
-        gender: gender,
-        avatarSeed: encodeURIComponent(name),
-        createdAt: new Date().toISOString()
-      };
-
-      const teachers = loadTeachers();
-      teachers.push(newTeacher);
-      saveTeachers(teachers);
-
-      // Đăng nhập ngay
-      currentTeacher = newTeacher;
-      localStorage.setItem(CURRENT_TEACHER_KEY, newTeacher.id);
-
-      dismissSmsBanner();
-      renderTeacherProfile();
-
-      // Hiển thị workspace lớp học
-      document.getElementById('authScreen').classList.add('hidden');
-      const appScreen = document.getElementById('appScreen');
-      appScreen.classList.remove('hidden');
-      appScreen.classList.add('flex');
-
-      // Tự động đồng bộ môn học phụ trách của Thầy/Cô vào selector
-      if (subject && subject !== 'all') {
-        appData.activeSubject = subject;
-        saveData(appData);
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Đang đăng ký vào máy chủ...`;
       }
 
-      renderAll();
-      sound.playWin();
-
-      // Bắn pháo hoa ăn mừng đăng ký thành công!
-      if (typeof confetti === 'function') {
-        confetti({
-          particleCount: 100,
-          spread: 80,
-          origin: { y: 0.6 }
+      try {
+        const resp = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            gender: gender,
+            school: school,
+            subject: subject,
+            phone: phone,
+            email: email,
+            password: password,
+            otpCode: otpEntered
+          })
         });
-      }
 
-      showToast(`🎉 Chào mừng ${newTeacher.name}! Đăng ký tài khoản thành công.`);
+        const result = await resp.json();
+
+        if (!resp.ok || !result.success) {
+          alert(result.message || 'Đăng ký tài khoản không thành công. Vui lòng kiểm tra lại mã OTP.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-shield-check mr-2"></i>Xác Thực Mã OTP & Hoàn Tất Đăng Ký`;
+          }
+          return;
+        }
+
+        // Đăng ký thành công từ server
+        currentTeacher = result.teacher;
+        if (result.token) {
+          localStorage.setItem(AUTH_TOKEN_KEY, result.token);
+        }
+        localStorage.setItem(CURRENT_TEACHER_KEY, currentTeacher.id);
+
+        // Lưu vào cache local
+        const teachers = loadTeachers();
+        const existingIdx = teachers.findIndex(t => t.id === currentTeacher.id);
+        if (existingIdx >= 0) {
+          teachers[existingIdx] = currentTeacher;
+        } else {
+          teachers.push(currentTeacher);
+        }
+        saveTeachers(teachers);
+
+        dismissSmsBanner();
+        renderTeacherProfile();
+
+        // Chuyển sang màn hình workspace lớp học
+        document.getElementById('authScreen').classList.add('hidden');
+        const appScreen = document.getElementById('appScreen');
+        appScreen.classList.remove('hidden');
+        appScreen.classList.add('flex');
+
+        if (subject && subject !== 'all') {
+          appData.activeSubject = subject;
+          saveData(appData);
+        }
+
+        renderAll();
+        sound.playWin();
+
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        }
+
+        showToast(`🎉 Chào mừng ${currentTeacher.name}! Tài khoản đã được kích hoạt trên server.`);
+      } catch (err) {
+        console.warn('Lỗi gọi API đăng ký server, dùng cơ chế dự phòng cục bộ:', err);
+        // Fallback local
+        const newTeacher = {
+          id: 'teacher-' + Date.now(),
+          name: name,
+          phone: phone,
+          email: email,
+          password: password,
+          school: school,
+          subject: subject,
+          gender: gender,
+          avatarSeed: encodeURIComponent(name),
+          createdAt: new Date().toISOString()
+        };
+
+        const teachers = loadTeachers();
+        teachers.push(newTeacher);
+        saveTeachers(teachers);
+
+        currentTeacher = newTeacher;
+        localStorage.setItem(CURRENT_TEACHER_KEY, newTeacher.id);
+
+        dismissSmsBanner();
+        renderTeacherProfile();
+
+        document.getElementById('authScreen').classList.add('hidden');
+        const appScreen = document.getElementById('appScreen');
+        appScreen.classList.remove('hidden');
+        appScreen.classList.add('flex');
+
+        renderAll();
+        sound.playWin();
+        showToast(`Chào mừng ${newTeacher.name}! Đăng ký thành công.`);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-solid fa-shield-check mr-2"></i>Xác Thực Mã OTP & Hoàn Tất Đăng Ký`;
+        }
+      }
     }
 
-    // ==================== XỬ LÝ SUBMIT ĐĂNG NHẬP ====================
-    function handleLoginSubmit(event) {
+    // ==================== XỬ LÝ SUBMIT ĐĂNG NHẬP VỚI SERVER ====================
+    async function handleLoginSubmit(event) {
       event.preventDefault();
-      const rawPhone = document.getElementById('loginPhone').value.trim();
-      const normalizedPhone = normalizePhone(rawPhone);
+      const identifier = document.getElementById('loginIdentifier').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const otpEntered = document.getElementById('loginOtp').value.trim();
 
-      if (!isValidVietnamesePhone(normalizedPhone)) {
-        alert('Vui lòng nhập số điện thoại hợp lệ.');
+      if (!identifier) {
+        alert('Vui lòng nhập Số điện thoại hoặc Địa chỉ Email.');
         return;
       }
 
-      const teachers = loadTeachers();
-      const teacher = teachers.find(t => t.phone === normalizedPhone);
-
-      if (!teacher) {
-        alert(`Không tìm thấy tài khoản với số điện thoại ${normalizedPhone}. Thầy/Cô vui lòng chuyển sang tab Đăng Ký.`);
+      if (activeLoginMode === 'password' && !password) {
+        alert('Vui lòng nhập mật khẩu.');
         return;
       }
 
-      if (activeLoginMode === 'password') {
-        const password = document.getElementById('loginPassword').value;
-        if (teacher.password !== password) {
-          alert('Mật khẩu không chính xác! Vui lòng thử lại hoặc chọn đăng nhập bằng "Mã OTP SMS".');
-          return;
-        }
-      } else {
-        // Chế độ OTP
-        const otpEntered = document.getElementById('loginOtp').value.trim();
-        if (!activeOtpSession.code || activeOtpSession.phone !== normalizedPhone) {
-          alert('Vui lòng nhấn nút "Gửi Mã OTP" để nhận mã xác thực qua tin nhắn trước.');
-          return;
-        }
-        if (Date.now() > activeOtpSession.expiresAt) {
-          alert('Mã OTP đã hết hiệu lực. Vui lòng bấm gửi lại mã mới.');
-          return;
-        }
-        if (otpEntered !== activeOtpSession.code) {
-          alert('Mã xác thực OTP không chính xác. Vui lòng kiểm tra lại tin nhắn SMS.');
-          return;
-        }
+      if (activeLoginMode === 'otp' && (!otpEntered || otpEntered.length !== 6)) {
+        alert('Vui lòng nhập đủ 6 chữ số mã OTP xác thực.');
+        return;
       }
 
-      // Đăng nhập thành công
-      currentTeacher = teacher;
-      const remember = document.getElementById('rememberLogin').checked;
-      if (remember) {
+      try {
+        const resp = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            identifier: identifier,
+            password: password,
+            otpCode: otpEntered,
+            loginMethod: activeLoginMode
+          })
+        });
+
+        const result = await resp.json();
+
+        if (!resp.ok || !result.success) {
+          alert(result.message || 'Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin.');
+          return;
+        }
+
+        currentTeacher = result.teacher;
+        if (result.token) {
+          localStorage.setItem(AUTH_TOKEN_KEY, result.token);
+        }
+
+        const remember = document.getElementById('rememberLogin').checked;
+        if (remember) {
+          localStorage.setItem(CURRENT_TEACHER_KEY, currentTeacher.id);
+        }
+
+        dismissSmsBanner();
+        renderTeacherProfile();
+
+        document.getElementById('authScreen').classList.add('hidden');
+        const appScreen = document.getElementById('appScreen');
+        appScreen.classList.remove('hidden');
+        appScreen.classList.add('flex');
+
+        renderAll();
+        sound.playWin();
+        showToast(`Chào mừng ${currentTeacher.name} đã đăng nhập!`);
+      } catch (err) {
+        console.warn('Lỗi gọi API đăng nhập, thử đăng nhập local:', err);
+        const teachers = loadTeachers();
+        const norm = normalizePhone(identifier);
+        const lower = identifier.toLowerCase();
+        const teacher = teachers.find(t => (t.phone && t.phone === norm) || (t.email && t.email.toLowerCase() === lower));
+
+        if (!teacher) {
+          alert('Không tìm thấy tài khoản giáo viên với thông tin này.');
+          return;
+        }
+
+        if (activeLoginMode === 'password' && teacher.password !== password) {
+          alert('Mật khẩu không chính xác.');
+          return;
+        }
+
+        currentTeacher = teacher;
         localStorage.setItem(CURRENT_TEACHER_KEY, teacher.id);
+        renderTeacherProfile();
+        document.getElementById('authScreen').classList.add('hidden');
+        const appScreen = document.getElementById('appScreen');
+        appScreen.classList.remove('hidden');
+        appScreen.classList.add('flex');
+        renderAll();
+        showToast(`Đã đăng nhập: ${teacher.name}`);
       }
-
-      dismissSmsBanner();
-      renderTeacherProfile();
-
-      document.getElementById('authScreen').classList.add('hidden');
-      const appScreen = document.getElementById('appScreen');
-      appScreen.classList.remove('hidden');
-      appScreen.classList.add('flex');
-
-      renderAll();
-      sound.playWin();
-      showToast(`Chào mừng ${teacher.name} đã đăng nhập!`);
     }
 
-    // Đăng nhập nhanh tài khoản demo
-    function quickDemoLogin(teacherId) {
+    // Đăng nhập nhanh tài khoản demo có sẵn trên server
+    async function quickDemoLogin(teacherId) {
+      try {
+        const resp = await fetch('/api/teachers');
+        if (resp.ok) {
+          const teachers = await resp.json();
+          const t = teachers.find(x => x.id === teacherId) || teachers[0];
+          if (t) {
+            currentTeacher = t;
+            localStorage.setItem(CURRENT_TEACHER_KEY, t.id);
+            renderTeacherProfile();
+            document.getElementById('authScreen').classList.add('hidden');
+            const appScreen = document.getElementById('appScreen');
+            appScreen.classList.remove('hidden');
+            appScreen.classList.add('flex');
+            renderAll();
+            sound.playTick();
+            showToast(`Đã đăng nhập với tài khoản: ${t.name}`);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Không kết nối được server demo, dùng local:', e);
+      }
+
       const teachers = loadTeachers();
       const t = teachers.find(x => x.id === teacherId) || teachers[0];
       if (!t) return;
@@ -3652,6 +3975,7 @@
     function handleLogout() {
       currentTeacher = null;
       localStorage.removeItem(CURRENT_TEACHER_KEY);
+      localStorage.removeItem(AUTH_TOKEN_KEY);
 
       const menu = document.getElementById('teacherDropdownMenu');
       if (menu) menu.classList.add('hidden');
@@ -3687,7 +4011,10 @@
 
       if (menuAvatar) menuAvatar.src = avatarUrl;
       if (menuFullName) menuFullName.textContent = currentTeacher.name;
-      if (menuPhone) menuPhone.textContent = currentTeacher.phone;
+      if (menuPhone) {
+        const contact = [currentTeacher.email, currentTeacher.phone].filter(Boolean).join(' • ');
+        menuPhone.textContent = contact || 'Chưa cập nhật liên hệ';
+      }
       if (menuSchool) menuSchool.textContent = currentTeacher.school;
       if (menuSubjectBadge) menuSubjectBadge.textContent = getSubjectName(currentTeacher.subject);
     }
@@ -3706,21 +4033,57 @@
       document.getElementById('editProfileSchool').value = currentTeacher.school || '';
       document.getElementById('editProfileSubject').value = currentTeacher.subject || 'math';
       document.getElementById('editProfilePhone').value = currentTeacher.phone || '';
+      document.getElementById('editProfileEmail').value = currentTeacher.email || '';
       openModal('editTeacherProfileModal');
     }
 
-    function handleUpdateTeacherProfile(event) {
+    async function handleUpdateTeacherProfile(event) {
       event.preventDefault();
       if (!currentTeacher) return;
 
       const newName = document.getElementById('editProfileName').value.trim();
       const newSchool = document.getElementById('editProfileSchool').value.trim();
       const newSubject = document.getElementById('editProfileSubject').value;
+      const newPhone = normalizePhone(document.getElementById('editProfilePhone').value.trim());
+      const newEmail = document.getElementById('editProfileEmail').value.trim();
 
-      currentTeacher.name = newName;
-      currentTeacher.school = newSchool;
-      currentTeacher.subject = newSubject;
-      currentTeacher.avatarSeed = encodeURIComponent(newName);
+      const token = localStorage.getItem(AUTH_TOKEN_KEY);
+
+      try {
+        const resp = await fetch('/api/auth/profile', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify({
+            name: newName,
+            school: newSchool,
+            subject: newSubject,
+            phone: newPhone,
+            email: newEmail
+          })
+        });
+
+        if (resp.ok) {
+          const res = await resp.json();
+          if (res.teacher) currentTeacher = res.teacher;
+        } else {
+          currentTeacher.name = newName;
+          currentTeacher.school = newSchool;
+          currentTeacher.subject = newSubject;
+          if (newPhone) currentTeacher.phone = newPhone;
+          if (newEmail) currentTeacher.email = newEmail;
+          currentTeacher.avatarSeed = encodeURIComponent(newName);
+        }
+      } catch (err) {
+        currentTeacher.name = newName;
+        currentTeacher.school = newSchool;
+        currentTeacher.subject = newSubject;
+        if (newPhone) currentTeacher.phone = newPhone;
+        if (newEmail) currentTeacher.email = newEmail;
+        currentTeacher.avatarSeed = encodeURIComponent(newName);
+      }
 
       const teachers = loadTeachers();
       const idx = teachers.findIndex(t => t.id === currentTeacher.id);
@@ -3756,23 +4119,60 @@
     }
 
     // Khởi chạy khi tài liệu sẵn sàng
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       // Đặt ngày mặc định cho form đánh giá là ngày hôm nay
       const dateInput = document.getElementById('assessDateInput');
       if (dateInput) {
         dateInput.value = new Date().toISOString().split('T')[0];
       }
 
-      // Kiểm tra trạng thái đăng nhập của giáo viên
-      const savedTeacherId = localStorage.getItem(CURRENT_TEACHER_KEY);
-      const teachers = loadTeachers();
-      const matched = teachers.find(t => t.id === savedTeacherId);
-
       const authScreen = document.getElementById('authScreen');
       const appScreen = document.getElementById('appScreen');
 
-      if (matched) {
-        currentTeacher = matched;
+      // 1. Đồng bộ danh sách giáo viên từ server nếu có kết nối
+      try {
+        const resp = await fetch('/api/teachers');
+        if (resp.ok) {
+          const remoteTeachers = await resp.json();
+          if (Array.isArray(remoteTeachers) && remoteTeachers.length > 0) {
+            saveTeachers(remoteTeachers);
+          }
+        }
+      } catch (err) {
+        // Hoạt động offline bình thường
+      }
+
+      // 2. Kiểm tra token đăng nhập từ server
+      const token = localStorage.getItem(AUTH_TOKEN_KEY);
+      let sessionTeacher = null;
+
+      if (token) {
+        try {
+          const meResp = await fetch('/api/auth/me', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          if (meResp.ok) {
+            const meData = await meResp.json();
+            if (meData.teacher) {
+              sessionTeacher = meData.teacher;
+            }
+          }
+        } catch (e) {
+          console.warn('Không thể kiểm tra token với server:', e);
+        }
+      }
+
+      // 3. Nếu chưa có qua token, kiểm tra ID giáo viên đã lưu
+      if (!sessionTeacher) {
+        const savedTeacherId = localStorage.getItem(CURRENT_TEACHER_KEY);
+        if (savedTeacherId) {
+          const teachers = loadTeachers();
+          sessionTeacher = teachers.find(t => t.id === savedTeacherId) || null;
+        }
+      }
+
+      if (sessionTeacher) {
+        currentTeacher = sessionTeacher;
         authScreen.classList.add('hidden');
         appScreen.classList.remove('hidden');
         appScreen.classList.add('flex');
